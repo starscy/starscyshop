@@ -29,8 +29,6 @@ services:
     container_name: app_php
     expose:
       - "9000"
-    environment:
-      - APP_ENV=${APP_ENV:-local}
     volumes:
       - ./src:/var/www/html
     networks:

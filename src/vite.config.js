@@ -13,6 +13,7 @@ export default defineConfig({
         vue(),
         tailwindcss(),
     ],
+    base: '/',
     server: {
         host: '0.0.0.0',
         port: 5173,
@@ -22,6 +23,10 @@ export default defineConfig({
         watch: {
             usePolling: true,
         },
+    },
+    build: {
+        outDir: 'public/build',
+        manifest: true,
     },
     resolve: {
         alias: {
