@@ -40,8 +40,7 @@ const { formatPrice, formatRelativeDate } = useFormatters()
                     {{ formatPrice(product.price) }}
                 </span>
 
-                <Link
-                    :href="route('web.products.show', { product: product.id })"
+                <Link :href="`/products/${product.id}`"
                     class="inline-flex items-center gap-1 text-blue-600 hover:text-blue-800 text-sm font-medium group"
                 >
                     <span>Подробнее</span>
