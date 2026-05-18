@@ -39,13 +39,13 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::delete('/products/{product}', [HomeController::class, 'adminDestroy'])->name('products.destroy');
 });
 
-Route::get('/debug-url', function () {
+
+Route::get('/debug-https', function () {
     return [
+        'is_secure' => request()->secure(),           // true = Laravel видит HTTPS ✅
+        'proto_header' => request()->header('X-Forwarded-Proto'),
         'app_url' => config('app.url'),
-        'asset_url' => config('app.asset_url'),
-        'current_url' => url()->current(),
-        'asset_example' => asset('build/manifest.json'),
-        'is_secure' => request()->secure(),
-        'headers' => request()->headers->all(),
+        'real_ip' => request()->ip(),
+        'all_headers' => request()->headers->all(),   // для полной отладки
     ];
 });
