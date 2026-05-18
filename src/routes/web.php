@@ -40,6 +40,16 @@ Route::prefix('admin')->name('admin.')->group(function () {
 });
 
 
+Route::get('/debug-route', function () {
+    return [
+        'app_env' => app()->environment(),
+        'app_url' => config('app.url'),
+        'is_secure' => request()->secure(),
+        'generated_product_url' => route('web.products.show', ['product' => 1]),
+        'generated_login_url' => route('login'),
+    ];
+});
+
 Route::get('/debug-https', function () {
     return [
         'is_secure' => request()->secure(),           // true = Laravel видит HTTPS ✅

@@ -3,8 +3,6 @@ services:
     image: nginx:alpine
     container_name: app_nginx
     ports:
-      # ✅ Если NGINX_BIND не задан — по умолчанию 80:80 (локально)
-      # ✅ Если задан 127.0.0.1 — только localhost (на проде)
       - "${NGINX_BIND:-0.0.0.0}:80:80"
     volumes:
       - ./src:/var/www/html
@@ -15,11 +13,6 @@ services:
         condition: service_healthy
     networks:
       - app_net
-    extra_hosts:
-      - "php:172.18.0.2"
-    dns:
-      - 127.0.0.11  # Docker internal DNS
-      - 8.8.8.8     # Fallback
     restart: unless-stopped
     logging:
       driver: "json-file"
@@ -35,11 +28,13 @@ services:
     expose:
       - "9000"
     environment:
-      - APP_ENV=production
+      - APP_ENV=${APP_ENV:-local}
     volumes:
       - ./src:/var/www/html
     networks:
-      - app_net
+      app_net:
+        aliases:
+          - php
     restart: unless-stopped
     deploy:
       resources:
