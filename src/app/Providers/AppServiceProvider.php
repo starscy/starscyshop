@@ -21,6 +21,9 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         if (app()->environment('production')) {
+            if (empty(config('app.asset_url'))) {
+                config(['app.asset_url' => config('app.url')]);
+            }
             URL::forceScheme('https');
         }
     }
