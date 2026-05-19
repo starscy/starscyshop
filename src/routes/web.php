@@ -2,12 +2,13 @@
 
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
 
 // ==================== ПУБЛИЧНЫЕ МАРШРУТЫ ====================
 Route::get('/', [HomeController::class, 'index'])->name('home');
-Route::get('/products', [HomeController::class, 'index'])->name('products.index');
-Route::get('/products/{product}', [HomeController::class, 'show'])->name('web.products.show');
+Route::get('/products', [ProductController::class, 'index'])->name('products.index');
+Route::get('/products/{product}', [ProductController::class, 'show'])->name('web.products.show');
 
 // ==================== АУТЕНТИФИКАЦИЯ (СТРАНИЦЫ) ====================
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
@@ -18,7 +19,7 @@ Route::get('/register', [AuthController::class, 'showRegister'])->name('register
 // проверка авторизации происходит на фронтенде (токен в localStorage)
 Route::prefix('admin')->name('admin.')->group(function () {
     // Главная админки (список товаров)
-    Route::get('/products', [HomeController::class, 'adminIndex'])->name('products.index');
+    Route::get('/products', [ProductController::class, 'adminIndex'])->name('products.index');
 
     // Форма создания товара
     Route::get('/products/create', function () {
@@ -36,7 +37,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
     })->name('products.edit');
 
     // Удаление товара (вызывает API)
-    Route::delete('/products/{product}', [HomeController::class, 'adminDestroy'])->name('products.destroy');
+    Route::delete('/products/{product}', [ProductController::class, 'adminDestroy'])->name('products.destroy');
 });
 
 
