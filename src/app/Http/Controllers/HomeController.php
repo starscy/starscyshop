@@ -11,8 +11,8 @@ class HomeController extends Controller
     {
 
         return Inertia::render('Home', [
-            'videoUrl' => asset('videos/hero-bg.mp4'),
-            'posterUrl' => asset('images/hero-poster.jpg'),
+            'videoUrl' => '/videos/hero-bg.mp4',
+            'posterUrl' => '/images/hero-poster.jpg',
         ]);
     }
 }
