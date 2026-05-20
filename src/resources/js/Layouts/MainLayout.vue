@@ -1,25 +1,17 @@
 <script setup>
-import Header from "./Components/Header.vue";
-import Footer from "./Components/Footer.vue";
+import VideoBackground from "./VideoBackground.vue";
 
-import { useAuth} from "../Composables/useAuth.js";
-
-const { isAuthenticated, userName, logout } = useAuth()
-
-const handleLogout = async () => {
-    await logout()
-}
+const props = defineProps({
+    videoUrl: String,
+    posterUrl: String
+})
 </script>
 
 <template>
-
-    <div class="min-h-screen bg-gray-100">
-        <Header/>
-
-        <main>
-            <slot/>
-        </main>
-
-        <Footer/>
+    <div class="relative min-h-screen">
+        <VideoBackground :video-url="videoUrl" :poster-url="posterUrl" />
+        <div class="relative z-10">
+            <slot />
+        </div>
     </div>
 </template>

@@ -24,7 +24,10 @@ class AuthController extends Controller
      */
     public function showLogin(): Response
     {
-        return Inertia::render('Auth/Login');
+        return Inertia::render('Auth/Login', [
+            'videoUrl' => '/videos/hero-bg.mp4',
+            'posterUrl' => '/images/hero-poster.jpg',
+        ]);
     }
 
     /**
@@ -32,7 +35,10 @@ class AuthController extends Controller
      */
     public function showRegister(): Response
     {
-        return Inertia::render('Auth/Register');
+        return Inertia::render('Auth/Register', [
+            'videoUrl' => '/videos/hero-bg.mp4',
+            'posterUrl' => 'images/hero-poster.jpg',
+        ]);
     }
 
     /**

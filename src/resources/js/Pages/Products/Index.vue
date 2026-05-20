@@ -1,5 +1,79 @@
+<script setup>
+import {computed, ref, watch} from 'vue'
+import { router, usePage } from '@inertiajs/vue3'
+import ProductCard from '@/Components/ProductCard.vue'
+import Pagination from '@/Components/Pagination.vue'
+import ProductLayout from "../../Layouts/ProductLayout.vue";
+
+const props = defineProps({
+    products: Object,
+    categories: Array,
+    filters: Object
+})
+
+const loading = ref(false)
+const page = usePage()
+const form = ref({
+    category_id: page.props.filters?.category_id ?? null,
+    sort_by: page.props.filters?.sort_by ?? null,
+    direction: page.props.filters?.direction ?? 'asc',
+})
+
+// ✅ Проверка активных фильтров
+const hasActiveFilters = computed(() => {
+    return form.value.category_id !== null || form.value.sort_by !== null
+})
+
+// ✅ Применение фильтров
+const applyFilters = () => {
+    loading.value = true
+
+    // Очищаем от null/пустых значений
+    const queryParams = Object.fromEntries(
+        Object.entries(form.value).filter(([_, value]) =>
+            value !== null && value !== undefined && value !== ''
+        )
+    )
+
+    router.get('/products', queryParams, { // ← прямой путь, если нет Ziggy
+        preserveState: true,
+        preserveScroll: true,
+        replace: true,
+        onFinish: () => { loading.value = false },
+        onError: (errors) => {
+            console.error('Filter error:', errors)
+            loading.value = false
+        }
+    })
+}
+
+// ✅ Сброс фильтров
+const resetFilters = () => {
+    form.value = {
+        category_id: null,
+        sort_by: null,
+        direction: 'asc',
+    }
+    applyFilters()
+}
+
+// ✅ Синхронизация: следим за page.props.filters (а не props.filters!)
+watch(
+    () => page.props.filters,
+    (newFilters) => {
+        form.value = {
+            category_id: newFilters?.category_id ?? null,
+            sort_by: newFilters?.sort_by ?? null,
+            direction: newFilters?.direction ?? 'asc',
+        }
+    },
+    { deep: true }
+)
+</script>
+
+
 <template>
-    <Layout>
+    <ProductLayout>
         <div class="container mx-auto px-4 py-8">
             <h1 class="text-3xl font-bold mb-8">Каталог товаров</h1>
 
@@ -90,78 +164,5 @@
                 <Pagination :links="products.links" />
             </div>
         </div>
-    </Layout>
+    </ProductLayout>
 </template>
-
-<script setup>
-import {computed, ref, watch} from 'vue'
-import { router, usePage } from '@inertiajs/vue3'
-import Layout from '@/Layouts/MainLayout.vue'
-import ProductCard from '@/Components/ProductCard.vue'
-import Pagination from '@/Components/Pagination.vue'
-
-const props = defineProps({
-    products: Object,
-    categories: Array,
-    filters: Object
-})
-
-const loading = ref(false)
-const page = usePage()
-const form = ref({
-    category_id: page.props.filters?.category_id ?? null,
-    sort_by: page.props.filters?.sort_by ?? null,
-    direction: page.props.filters?.direction ?? 'asc',
-})
-
-// ✅ Проверка активных фильтров
-const hasActiveFilters = computed(() => {
-    return form.value.category_id !== null || form.value.sort_by !== null
-})
-
-// ✅ Применение фильтров
-const applyFilters = () => {
-    loading.value = true
-
-    // Очищаем от null/пустых значений
-    const queryParams = Object.fromEntries(
-        Object.entries(form.value).filter(([_, value]) =>
-            value !== null && value !== undefined && value !== ''
-        )
-    )
-
-    router.get('/products', queryParams, { // ← прямой путь, если нет Ziggy
-        preserveState: true,
-        preserveScroll: true,
-        replace: true,
-        onFinish: () => { loading.value = false },
-        onError: (errors) => {
-            console.error('Filter error:', errors)
-            loading.value = false
-        }
-    })
-}
-
-// ✅ Сброс фильтров
-const resetFilters = () => {
-    form.value = {
-        category_id: null,
-        sort_by: null,
-        direction: 'asc',
-    }
-    applyFilters()
-}
-
-// ✅ Синхронизация: следим за page.props.filters (а не props.filters!)
-watch(
-    () => page.props.filters,
-    (newFilters) => {
-        form.value = {
-            category_id: newFilters?.category_id ?? null,
-            sort_by: newFilters?.sort_by ?? null,
-            direction: newFilters?.direction ?? 'asc',
-        }
-    },
-    { deep: true }
-)
-</script>
