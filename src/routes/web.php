@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProductController;
+use App\Models\Product;
 use Illuminate\Support\Facades\Route;
 
 // ==================== ПУБЛИЧНЫЕ МАРШРУТЫ ====================
@@ -29,7 +30,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
     })->name('products.create');
 
     // Форма редактирования товара
-    Route::get('/products/{product}/edit', function (\App\Models\Product $product) {
+    Route::get('/products/{product}/edit', function (Product $product) {
         return \Inertia\Inertia::render('Admin/Products/Form', [
             'product' => $product->load('category'),
             'categories' => \App\Models\Category::all(),
@@ -40,23 +41,9 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::delete('/products/{product}', [ProductController::class, 'adminDestroy'])->name('products.destroy');
 });
 
-
-Route::get('/debug-route', function () {
-    return [
-        'app_env' => app()->environment(),
-        'app_url' => config('app.url'),
-        'is_secure' => request()->secure(),
-        'generated_product_url' => route('web.products.show', ['product' => 1]),
-        'generated_login_url' => route('login'),
-    ];
-});
-
-Route::get('/debug-https', function () {
-    return [
-        'is_secure' => request()->secure(),           // true = Laravel видит HTTPS ✅
-        'proto_header' => request()->header('X-Forwarded-Proto'),
-        'app_url' => config('app.url'),
-        'real_ip' => request()->ip(),
-        'all_headers' => request()->headers->all(),   // для полной отладки
-    ];
+Route::get('/sitemap.xml', function () {
+    $products = Product::all();
+    return response()
+        ->view('sitemap', ['products' => $products])
+        ->header('Content-Type', 'text/xml');
 });
