@@ -1,9 +1,9 @@
 <script setup>
 import {computed, ref, watch} from 'vue'
-import { router, usePage } from '@inertiajs/vue3'
+import {router, usePage} from '@inertiajs/vue3'
 import ProductCard from '@/Components/ProductCard.vue'
 import Pagination from '@/Components/Pagination.vue'
-import ProductLayout from "../../Layouts/ProductLayout.vue";
+import ProductLayout from "@/Layouts/ProductLayout.vue";
 
 const props = defineProps({
     products: Object,
@@ -19,12 +19,12 @@ const form = ref({
     direction: page.props.filters?.direction ?? 'asc',
 })
 
-// ✅ Проверка активных фильтров
+// Проверка активных фильтров
 const hasActiveFilters = computed(() => {
     return form.value.category_id !== null || form.value.sort_by !== null
 })
 
-// ✅ Применение фильтров
+// Применение фильтров
 const applyFilters = () => {
     loading.value = true
 
@@ -35,11 +35,13 @@ const applyFilters = () => {
         )
     )
 
-    router.get('/products', queryParams, { // ← прямой путь, если нет Ziggy
+    router.get('/products', queryParams, {
         preserveState: true,
         preserveScroll: true,
         replace: true,
-        onFinish: () => { loading.value = false },
+        onFinish: () => {
+            loading.value = false
+        },
         onError: (errors) => {
             console.error('Filter error:', errors)
             loading.value = false
@@ -47,7 +49,6 @@ const applyFilters = () => {
     })
 }
 
-// ✅ Сброс фильтров
 const resetFilters = () => {
     form.value = {
         category_id: null,
@@ -57,7 +58,6 @@ const resetFilters = () => {
     applyFilters()
 }
 
-// ✅ Синхронизация: следим за page.props.filters (а не props.filters!)
 watch(
     () => page.props.filters,
     (newFilters) => {
@@ -67,7 +67,7 @@ watch(
             direction: newFilters?.direction ?? 'asc',
         }
     },
-    { deep: true }
+    {deep: true}
 )
 </script>
 
@@ -75,8 +75,6 @@ watch(
 <template>
     <ProductLayout>
         <div class="container mx-auto px-4 py-8">
-            <h1 class="text-3xl font-bold mb-8">Каталог товаров</h1>
-
             <!-- Фильтры -->
             <div class="bg-white rounded-lg shadow-md p-6 mb-8">
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -161,7 +159,7 @@ watch(
 
             <!-- Пагинация -->
             <div v-if="products.links" class="mt-8">
-                <Pagination :links="products.links" />
+                <Pagination :links="products.links"/>
             </div>
         </div>
     </ProductLayout>

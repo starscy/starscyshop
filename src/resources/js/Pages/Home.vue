@@ -23,7 +23,7 @@ const greeting = computed(() => {
     <Layout
         :video-url="videoUrl"
         :poster-url="posterUrl"
-        title="Барахолка Серпухов | Главная"
+        title="Звёздный шопинг в Серпухове | Главная"
         description="Лучшие товары в Серпухове. Покупайте и продавайте с удовольствием. Тысячи объявлений от местных продавцов."
     >
         <div class="flex flex-col items-center justify-center min-h-screen px-4">
@@ -31,13 +31,13 @@ const greeting = computed(() => {
                 <h1 class="text-5xl md:text-7xl lg:text-8xl font-extrabold text-white tracking-tight mb-4 drop-shadow-2xl">
                     Звёздный шопинг в Серпухове
                 </h1>
-                <p class="text-xl md:text-2xl text-gray-100 max-w-2xl drop-shadow-lg">
-                    Покупайте и продавайте вещи в своём городе. Быстро. Удобно. Надёжно.
+                <p class="text-xl md:text-2xl text-gray-100 drop-shadow-lg">
+                    Покупайте и продавайте вещи в своём городе. Быстро. Удобно.
                 </p>
             </div>
 
             <div class="flex flex-col gap-6 w-full max-w-md animate-slideUp">
-                <!-- Кнопка каталога (всегда видна) -->
+                <!-- Кнопка каталога -->
                 <Link
                     href="/products"
                     class="group relative overflow-hidden rounded-2xl bg-white/10 backdrop-blur-md border border-white/20
