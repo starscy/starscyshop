@@ -17,7 +17,7 @@ class HomeController extends Controller
 
         return Inertia::render('Home', [
             'videoUrl' => $videoUrl,
-            'posterUrl' => '/images/hero-poster.jpg'
+            'posterUrl' => '/images/hero-poster.webp'
         ]);
     }
 }
