@@ -1,10 +1,21 @@
 <script setup>
 import { Head, Link } from '@inertiajs/vue3'
 import Layout from '@/Layouts/MainLayout.vue'
+import { computed } from 'vue'
+import { useAuth } from '@/Composables/useAuth'
 
 defineProps({
     videoUrl: String,
     posterUrl: String
+})
+
+const { isAuthenticated, userName } = useAuth()
+// Приветствие в зависимости от времени суток
+const greeting = computed(() => {
+    const hour = new Date().getHours()
+    if (hour < 12) return 'Доброе утро'
+    if (hour < 18) return 'Добрый день'
+    return 'Добрый вечер'
 })
 </script>
 
@@ -18,7 +29,15 @@ defineProps({
         <div class="flex flex-col items-center justify-center min-h-screen px-4">
             <div class="text-center mb-12 animate-fadeIn">
                 <h1 class="text-5xl md:text-7xl lg:text-8xl font-extrabold text-white tracking-tight mb-4 drop-shadow-2xl">
-                    Добро пожаловать
+                    <template v-if="isAuthenticated">
+                        {{ greeting }},
+                        <span class="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
+                            {{ userName }}
+                        </span>
+                    </template>
+                    <template v-else>
+                        Добро пожаловать
+                    </template>
                 </h1>
                 <p class="text-xl md:text-2xl text-gray-100 max-w-2xl drop-shadow-lg">
                     Лучшие товары в Серпухове. Быстро. Удобно. Надёжно.
@@ -26,6 +45,7 @@ defineProps({
             </div>
 
             <div class="flex flex-col gap-6 w-full max-w-md animate-slideUp">
+                <!-- Кнопка каталога (всегда видна) -->
                 <Link
                     href="/products"
                     class="group relative overflow-hidden rounded-2xl bg-white/10 backdrop-blur-md border border-white/20
@@ -54,7 +74,9 @@ defineProps({
                     </p>
                 </Link>
 
+                <!-- Кнопка "Войти" для неавторизованных -->
                 <Link
+                    v-if="!isAuthenticated"
                     href="/login"
                     class="group relative overflow-hidden rounded-2xl bg-black/20 backdrop-blur-md border border-white/20
                            px-8 py-6 text-center transition-all duration-300
@@ -79,6 +101,36 @@ defineProps({
 
                     <p class="relative text-sm text-white/70 mt-2 group-hover:text-white/90 transition-colors">
                         Войдите в свой профиль для управления товарами
+                    </p>
+                </Link>
+
+                <!-- Кнопка "Профиль" для авторизованных -->
+                <Link
+                    v-else
+                    href="/admin/products"
+                    class="group relative overflow-hidden rounded-2xl bg-gradient-to-r from-blue-600/30 to-purple-600/30 backdrop-blur-md border border-white/30
+                           px-8 py-6 text-center transition-all duration-300
+                           hover:bg-white/20 hover:border-white/50 hover:scale-105
+                           hover:shadow-2xl active:scale-95"
+                >
+                    <div class="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                        <div class="absolute inset-0 bg-gradient-to-r from-blue-500/30 to-purple-500/30 blur-xl"></div>
+                    </div>
+
+                    <div class="relative flex items-center justify-center gap-3">
+                        <svg class="w-8 h-8 text-white group-hover:scale-110 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        <span class="text-2xl font-semibold text-white tracking-wide">
+                            Мой профиль
+                        </span>
+                        <svg class="w-6 h-6 text-white transform group-hover:translate-x-2 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                        </svg>
+                    </div>
+
+                    <p class="relative text-sm text-white/70 mt-2 group-hover:text-white/90 transition-colors">
+                        Управляйте своими товарами и заказами
                     </p>
                 </Link>
             </div>
