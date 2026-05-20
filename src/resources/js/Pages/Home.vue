@@ -9,9 +9,12 @@ defineProps({
 </script>
 
 <template>
-    <Layout :video-url="videoUrl" :poster-url="posterUrl">
-        <Head title="Главная | Барахолка Серпухов"/>
-
+    <Layout
+        :video-url="videoUrl"
+        :poster-url="posterUrl"
+        title="Барахолка Серпухов | Главная"
+        description="Лучшие товары в Серпухове. Покупайте и продавайте с удовольствием. Тысячи объявлений от местных продавцов."
+    >
         <div class="flex flex-col items-center justify-center min-h-screen px-4">
             <div class="text-center mb-12 animate-fadeIn">
                 <h1 class="text-5xl md:text-7xl lg:text-8xl font-extrabold text-white tracking-tight mb-4 drop-shadow-2xl">

@@ -38,9 +38,12 @@ const submit = async () => {
 </script>
 
 <template>
-    <Layout :video-url="videoUrl" :poster-url="posterUrl">
-        <Head title="Регистрация | Барахолка Серпухов"/>
-
+    <Layout
+        :video-url="videoUrl"
+        :poster-url="posterUrl"
+        title="Регистрация | Барахолка Серпухов"
+        description="Создайте аккаунт на Барахолке Серпухов. Начинайте продавать и покупать товары уже сегодня."
+    >
         <div class="flex items-center justify-center min-h-screen px-4 py-8">
             <div class="max-w-md w-full animate-fadeInScale">
                 <div class="relative rounded-2xl bg-white/10 backdrop-blur-xl border border-white/20 p-8 shadow-2xl

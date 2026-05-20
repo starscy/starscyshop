@@ -29,7 +29,7 @@ const submit = async () => {
     if (result.success) {
         window.location.href = '/admin/products'
     } else {
-        errors.value = result.errors || { email: 'Ошибка входа. Проверьте email и пароль.' }
+        errors.value = result.errors || {email: 'Ошибка входа. Проверьте email и пароль.'}
     }
 
     processing.value = false
@@ -37,11 +37,13 @@ const submit = async () => {
 </script>
 
 <template>
-    <Layout :video-url="videoUrl" :poster-url="posterUrl">
-        <Head title="Вход | Барахолка Серпухов"/>
-
+    <Layout
+        :video-url="videoUrl"
+        :poster-url="posterUrl"
+        title="Вход | Барахолка Серпухов"
+        description="Войдите в свой аккаунт на Барахолке Серпухов. Управляйте товарами, общайтесь с покупателями."
+    >
         <div class="flex items-center justify-center min-h-screen px-4 py-8">
-            <!-- Анимированная карточка -->
             <div class="max-w-md w-full animate-fadeInScale">
                 <div class="relative rounded-2xl bg-white/10 backdrop-blur-xl border border-white/20 p-8 shadow-2xl
                            transition-all duration-500 hover:shadow-3xl hover:bg-white/15">
@@ -49,10 +51,10 @@ const submit = async () => {
                     <div class="absolute -top-10 -right-10 w-40 h-40 bg-blue-500/20 rounded-full blur-3xl"></div>
                     <div class="absolute -bottom-10 -left-10 w-40 h-40 bg-purple-500/20 rounded-full blur-3xl"></div>
 
-                    <!-- Кнопка назад -->
                     <Link href="/" class="absolute top-4 left-4 text-white/60 hover:text-white transition-colors">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                  d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
                         </svg>
                     </Link>
 
@@ -60,7 +62,8 @@ const submit = async () => {
                         <div class="flex justify-center mb-4">
                             <div class="p-3 rounded-2xl bg-gradient-to-br from-blue-500 to-purple-600 shadow-lg">
                                 <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                          d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
                                 </svg>
                             </div>
                         </div>
@@ -92,7 +95,8 @@ const submit = async () => {
                             </div>
 
                             <div class="animate-slideRight" style="animation-delay: 0.2s">
-                                <label for="password" class="block text-sm font-medium text-gray-200 mb-1">Пароль</label>
+                                <label for="password"
+                                       class="block text-sm font-medium text-gray-200 mb-1">Пароль</label>
                                 <input
                                     id="password"
                                     v-model="form.password"
@@ -108,7 +112,8 @@ const submit = async () => {
                                 <p v-if="errors.password" class="text-red-400 text-sm mt-1">{{ errors.password }}</p>
                             </div>
 
-                            <div class="flex items-center justify-between animate-slideRight" style="animation-delay: 0.3s">
+                            <div class="flex items-center justify-between animate-slideRight"
+                                 style="animation-delay: 0.3s">
                                 <label class="flex items-center cursor-pointer">
                                     <input
                                         type="checkbox"
@@ -133,13 +138,18 @@ const submit = async () => {
                                    animate-slideUp"
                             style="animation-delay: 0.4s"
                         >
-                            <svg v-if="processing" class="animate-spin h-5 w-5 text-white" fill="none" viewBox="0 0 24 24">
-                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                            <svg v-if="processing" class="animate-spin h-5 w-5 text-white" fill="none"
+                                 viewBox="0 0 24 24">
+                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
+                                        stroke-width="4"></circle>
+                                <path class="opacity-75" fill="currentColor"
+                                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                             </svg>
                             <span v-else>{{ processing ? 'Вход...' : 'Войти' }}</span>
-                            <svg v-if="!processing" class="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                            <svg v-if="!processing" class="w-5 h-5 group-hover:translate-x-1 transition-transform"
+                                 fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                      d="M9 5l7 7-7 7"></path>
                             </svg>
                         </button>
 
