@@ -8,11 +8,11 @@ const props = defineProps({
     posterUrl: String,
     title: {
         type: String,
-        default: 'Звёздный шопинг в Серпухове'
+        default: 'Звёздный шопинг в Серпухове | Starscy'
     },
     description: {
         type: String,
-        default: 'Покупай. Продавай. Сияй'
+        default: 'Звёздный шопинг в Серпухове. Тысячи товаров от местных продавцов. Покупай. Продавай. Сияй'
     }
 })
 
