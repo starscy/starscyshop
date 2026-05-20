@@ -16,6 +16,7 @@ const handleVideoError = () => {
 <template>
     <div class="fixed inset-0 -z-10">
         <video
+            preload="metadata"
             v-if="!videoError && videoUrl"
             :src="videoUrl"
             class="w-full h-full object-cover"

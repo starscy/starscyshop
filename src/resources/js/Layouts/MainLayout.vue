@@ -1,6 +1,7 @@
 <script setup>
 import { Head } from '@inertiajs/vue3'
 import VideoBackground from './VideoBackground.vue'
+import {onMounted} from "vue";
 
 const props = defineProps({
     videoUrl: String,
@@ -13,6 +14,15 @@ const props = defineProps({
         type: String,
         default: 'Лучшие товары в Серпухове. Покупайте и продавайте с удовольствием. Тысячи объявлений от местных продавцов.'
     }
+})
+
+onMounted(() => {
+    const videoUrl = 'https://starscy.ru/videos/hero-bg.mp4'
+    const link = document.createElement('link')
+    link.rel = 'preload'
+    link.as = 'video'
+    link.href = videoUrl
+    document.head.appendChild(link)
 })
 </script>
 
