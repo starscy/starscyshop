@@ -10,11 +10,21 @@ defineProps({
 })
 
 const {isAuthenticated, userName} = useAuth()
-// Приветствие в зависимости от времени суток
+// Используем computed, но добавляем текущую дату как зависимость (хитрость)
 const greeting = computed(() => {
-    const hour = new Date().getHours()
-    if (hour < 12) return 'Доброе утро'
-    if (hour < 18) return 'Добрый день'
+    // eslint-disable-next-line no-unused-expressions
+    Date.now()
+    const now = new Date()
+    const hour = now.getHours()
+    const minutes = now.getMinutes()
+
+    // С 00:00 до 05:59 — ночь
+    if (hour >= 0 && hour < 6) return 'Доброй ночи'
+    // С 06:00 до 11:59 — утро
+    if (hour >= 6 && hour < 12) return 'Доброе утро'
+    // С 12:00 до 17:59 — день
+    if (hour >= 12 && hour < 18) return 'Добрый день'
+    // С 18:00 до 23:59 — вечер
     return 'Добрый вечер'
 })
 </script>

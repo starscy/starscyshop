@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\User;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\CategoryController;
@@ -28,4 +30,18 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Выход
     Route::post('/logout', [AuthController::class, 'logout']);
+
+    Route::get('/users/stats', function () {
+        // Общее количество пользователей
+        $total = User::count();
+
+        // Онлайн пользователи (активные за последние 5 минут)
+        $online = Cache::get('online_users', 0);
+
+        return response()->json([
+            'total' => $total,
+            'online' => $online
+        ]);
+    })->middleware('auth:sanctum');
 });
+
