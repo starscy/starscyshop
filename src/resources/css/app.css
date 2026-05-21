@@ -1,1 +1,106 @@
 @import 'tailwindcss';
+
+/* ========== ДИНАМИЧЕСКАЯ ТЕМА ========== */
+:root {
+    --theme-primary: 245, 158, 11;
+    --theme-primary-light: 253, 224, 71;
+    --theme-gradient-start: 202, 138, 4;
+    --theme-gradient-end: 245, 158, 11;
+}
+
+/* Кнопка с градиентом темы */
+.btn-theme {
+    background: linear-gradient(to right,
+    rgb(var(--theme-gradient-start)),
+    rgb(var(--theme-gradient-end))
+    );
+    transition: all 0.3s ease;
+}
+
+.btn-theme:hover {
+    background: linear-gradient(to right,
+    rgb(var(--theme-gradient-end)),
+    rgb(var(--theme-primary-light))
+    );
+    transform: scale(1.02);
+}
+
+/* Текст с цветом темы */
+.text-theme {
+    color: rgb(var(--theme-primary));
+}
+
+.text-theme:hover {
+    color: rgb(var(--theme-primary-light));
+}
+
+/* Граница с цветом темы */
+.border-theme {
+    border-color: rgba(var(--theme-primary), 0.3);
+}
+
+.border-theme:hover {
+    border-color: rgba(var(--theme-primary), 0.5);
+}
+
+/* Фон с прозрачностью темы */
+.bg-theme-soft {
+    background: rgba(var(--theme-primary), 0.1);
+}
+
+/* Звезда с цветом темы */
+.star-theme {
+    color: rgb(var(--theme-primary));
+}
+
+/* Блик темы */
+.blur-theme {
+    background: radial-gradient(circle, rgba(var(--theme-primary), 0.2) 0%, transparent 70%);
+}
+
+/* Анимация для страниц */
+.page-enter-active,
+.page-leave-active {
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.page-enter-from {
+    opacity: 0;
+    transform: translateY(30px);
+}
+
+.page-leave-to {
+    opacity: 0;
+    transform: translateY(-20px);
+}
+
+/* Анимация для карточки авторизации */
+.auth-card-enter-active {
+    transition: all 0.5s cubic-bezier(0.34, 1.2, 0.64, 1);
+}
+
+.auth-card-enter-from {
+    opacity: 0;
+    transform: translateY(60px);
+}
+
+.auth-card-enter-to {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Задержка для элементов формы */
+.auth-form-item {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: slideUpFade 0.4s ease forwards;
+}
+
+@keyframes slideUpFade {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+

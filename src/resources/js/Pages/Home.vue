@@ -1,30 +1,25 @@
 <script setup>
-import {Head, Link} from '@inertiajs/vue3'
+import { Head, Link } from '@inertiajs/vue3'
 import Layout from '@/Layouts/MainLayout.vue'
-import {computed} from 'vue'
-import {useAuth} from '@/Composables/useAuth'
+import { computed } from 'vue'
+import { useAuth } from '@/Composables/useAuth'
+import { useGoldTheme } from '@/Composables/styles/useGoldTheme'
+import ThemeSwitcher from '../Layouts/Components/Seo/ThemeSwitcher.vue'
 
 defineProps({
     videoUrl: String,
     posterUrl: String
 })
 
-const {isAuthenticated, userName} = useAuth()
-// Используем computed, но добавляем текущую дату как зависимость (хитрость)
-const greeting = computed(() => {
-    // eslint-disable-next-line no-unused-expressions
-    Date.now()
-    const now = new Date()
-    const hour = now.getHours()
-    const minutes = now.getMinutes()
+const { isAuthenticated, userName } = useAuth()
+const { theme } = useGoldTheme()
 
-    // С 00:00 до 05:59 — ночь
+const greeting = computed(() => {
+    Date.now()
+    const hour = new Date().getHours()
     if (hour >= 0 && hour < 6) return 'Доброй ночи'
-    // С 06:00 до 11:59 — утро
     if (hour >= 6 && hour < 12) return 'Доброе утро'
-    // С 12:00 до 17:59 — день
     if (hour >= 12 && hour < 18) return 'Добрый день'
-    // С 18:00 до 23:59 — вечер
     return 'Добрый вечер'
 })
 </script>
@@ -44,102 +39,80 @@ const greeting = computed(() => {
                 <p class="text-xl md:text-2xl text-gray-100 drop-shadow-lg">
                     Покупайте и продавайте вещи в своём городе. Быстро. Удобно.
                 </p>
+
+                <div class="mt-6">
+                    <ThemeSwitcher />
+                </div>
             </div>
 
             <div class="flex flex-col gap-6 w-full max-w-md animate-slideUp">
-                <!-- Кнопка каталога -->
+                <!-- Кнопка каталога (прозрачная, с темной рамкой) -->
                 <Link
                     href="/products"
-                    class="group relative overflow-hidden rounded-2xl bg-white/10 backdrop-blur-md border border-white/20
-                           px-8 py-6 text-center transition-all duration-300
-                           hover:bg-white/20 hover:border-white/40 hover:scale-105
-                           hover:shadow-2xl active:scale-95"
+                    class="group relative overflow-hidden rounded-2xl backdrop-blur-md px-8 py-6 text-center transition-all duration-300 hover:scale-105"
+                    :class="[theme.bg, theme.border, theme.borderHover]"
                 >
-                    <div class="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                        <div class="absolute inset-0 bg-gradient-to-r from-blue-500/20 to-purple-500/20 blur-xl"></div>
+                    <!-- Градиентная рамка (псевдо-элемент) -->
+                    <div class="absolute inset-0 rounded-2xl p-[1px] pointer-events-none">
+                        <div
+                            class="w-full h-full rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                            :class="`bg-gradient-to-r ${theme.gradientBtn}`"
+                        ></div>
                     </div>
 
+                    <!-- Внутренний фон (прозрачный, но с размытием) -->
+                    <div class="absolute inset-0 rounded-2xl bg-gray-900/40 backdrop-blur-md"></div>
+
+                    <!-- Контент кнопки -->
                     <div class="relative flex items-center justify-center gap-3">
-                        <svg class="w-8 h-8 text-white group-hover:scale-110 transition-transform duration-300"
+                        <svg :class="`w-8 h-8 text-white/90 group-hover:text-white transition-colors ${theme.text}`"
                              fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                   d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-1.5 1.5M17 13l1.5 1.5M9 21h6M12 18v3M4 5h16"></path>
                         </svg>
-                        <span class="text-2xl font-semibold text-white tracking-wide">
-                            Смотреть каталог
-                        </span>
-                        <svg
-                            class="w-6 h-6 text-white transform group-hover:translate-x-2 transition-transform duration-300"
-                            fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                  d="M9 5l7 7-7 7"></path>
+                        <span class="text-2xl font-semibold text-white tracking-wide">Смотреть каталог</span>
+                        <svg class="w-6 h-6 text-white/90 transform group-hover:translate-x-2 transition-transform duration-300"
+                             fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
                         </svg>
                     </div>
-
-                    <p class="relative text-sm text-white/70 mt-2 group-hover:text-white/90 transition-colors">
+                    <p class="relative text-sm text-white/60 mt-2 group-hover:text-white/80 transition-colors">
                         Тысячи товаров от местных продавцов
                     </p>
                 </Link>
 
-                <!-- Кнопка "Войти" для неавторизованных -->
+                <!-- Кнопка "Войти" (аналогично) -->
                 <Link
                     v-if="!isAuthenticated"
                     href="/login"
-                    class="group relative overflow-hidden rounded-2xl bg-black/20 backdrop-blur-md border border-white/20
-                           px-8 py-6 text-center transition-all duration-300
-                           hover:bg-white/10 hover:border-white/40 hover:scale-105
-                           hover:shadow-2xl active:scale-95"
+                    class="group relative overflow-hidden rounded-2xl backdrop-blur-md px-8 py-6 text-center transition-all duration-300 hover:scale-105"
+                    :class="[theme.bg, theme.border, theme.borderHover]"
                 >
-                    <div class="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                    <!-- Градиентная рамка при ховере -->
+                    <div class="absolute inset-0 rounded-2xl p-[1px] pointer-events-none">
                         <div
-                            class="absolute inset-0 bg-gradient-to-r from-green-500/20 to-emerald-500/20 blur-xl"></div>
+                            class="w-full h-full rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                            :class="`bg-gradient-to-r ${theme.gradientBtn}`"
+                        ></div>
                     </div>
 
+                    <!-- Внутренний прозрачный фон -->
+                    <div class="absolute inset-0 rounded-2xl bg-gray-900/40 backdrop-blur-md"></div>
+
+                    <!-- Контент -->
                     <div class="relative flex items-center justify-center gap-3">
-                        <svg class="w-8 h-8 text-white group-hover:scale-110 transition-transform duration-300"
-                             fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg :class="`w-8 h-8 text-white/90 ${theme.text}`" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                   d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
                         </svg>
-                        <span class="text-2xl font-semibold text-white tracking-wide">
-                            Войти в аккаунт
-                        </span>
-                        <svg
-                            class="w-6 h-6 text-white transform group-hover:translate-x-2 transition-transform duration-300"
-                            fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                  d="M9 5l7 7-7 7"></path>
+                        <span class="text-2xl font-semibold text-white tracking-wide">Войти в аккаунт</span>
+                        <svg :class="`w-6 h-6 text-white/90 transform group-hover:translate-x-2 transition-transform ${theme.text}`"
+                             fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
                         </svg>
                     </div>
-
-                    <p class="relative text-sm text-white/70 mt-2 group-hover:text-white/90 transition-colors">
+                    <p class="relative text-sm text-white/60 mt-2 group-hover:text-white/80 transition-colors">
                         Войдите в свой профиль для управления товарами
-                    </p>
-                </Link>
-
-                <!-- Кнопка "Профиль" для авторизованных -->
-                <Link
-                    v-else
-                    href="/admin/products"
-                    class="group relative overflow-hidden rounded-2xl bg-gradient-to-r from-blue-600/30 to-purple-600/30 backdrop-blur-md border border-white/30 px-8 py-6"
-                >
-                    <div class="relative flex items-center justify-center gap-3">
-                        <p class="text-2xl font-semibold text-white tracking-wide">
-                            {{ greeting }},
-                            <span class="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
-                            {{ userName }}
-                            </span>
-                        </p>
-                        <svg
-                            class="w-6 h-6 text-white transform group-hover:translate-x-2 transition-transform duration-300"
-                            fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                  d="M9 5l7 7-7 7"></path>
-                        </svg>
-                    </div>
-
-                    <p class="relative text-sm text-white/70 mt-2">
-                        Перейти в профиль →
                     </p>
                 </Link>
             </div>
@@ -149,32 +122,13 @@ const greeting = computed(() => {
 
 <style scoped>
 @keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(-20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
 }
-
 @keyframes slideUp {
-    from {
-        opacity: 0;
-        transform: translateY(30px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
 }
-
-.animate-fadeIn {
-    animation: fadeIn 0.8s ease-out;
-}
-
-.animate-slideUp {
-    animation: slideUp 0.6s ease-out 0.2s both;
-}
+.animate-fadeIn { animation: fadeIn 0.8s ease-out; }
+.animate-slideUp { animation: slideUp 0.6s ease-out 0.2s both; }
 </style>

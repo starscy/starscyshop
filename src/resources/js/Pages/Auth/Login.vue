@@ -1,6 +1,6 @@
 <script setup>
 import { reactive, ref } from 'vue'
-import { Link, Head } from '@inertiajs/vue3'
+import { Link, Head, router } from '@inertiajs/vue3'
 import { useAuth } from '../../Composables/useAuth.js'
 import Layout from '@/Layouts/MainLayout.vue'
 
@@ -27,7 +27,7 @@ const submit = async () => {
     const result = await login(form)
 
     if (result.success) {
-        window.location.href = '/admin/products'
+        router.visit('/admin/products')
     } else {
         errors.value = result.errors || {email: 'Ошибка входа. Проверьте email и пароль.'}
     }
@@ -40,18 +40,21 @@ const submit = async () => {
     <Layout
         :video-url="videoUrl"
         :poster-url="posterUrl"
-        title="Вход | Барахолка Серпухов"
-        description="Войдите в свой аккаунт на Барахолке Серпухов. Управляйте товарами, общайтесь с покупателями."
+        title="Вход | Звёздный шопинг в Серпухове"
+        description="Войдите в свой аккаунт на Звёздном шопинге в Серпухове. Управляйте товарами, общайтесь с покупателями."
     >
         <div class="flex items-center justify-center min-h-screen px-4 py-8">
-            <div class="max-w-md w-full animate-fadeInScale">
-                <div class="relative rounded-2xl bg-white/10 backdrop-blur-xl border border-white/20 p-8 shadow-2xl
-                           transition-all duration-500 hover:shadow-3xl hover:bg-white/15">
+            <div class="max-w-md w-full auth-card-enter-active">
+                <!-- Карточка с анимацией выезжания -->
+                <div class="relative rounded-2xl bg-gray-900/80 backdrop-blur-xl border border-yellow-500/30 p-8 shadow-2xl
+                           transition-all duration-500 hover:border-yellow-400/50 hover:shadow-yellow-500/10">
 
-                    <div class="absolute -top-10 -right-10 w-40 h-40 bg-blue-500/20 rounded-full blur-3xl"></div>
-                    <div class="absolute -bottom-10 -left-10 w-40 h-40 bg-purple-500/20 rounded-full blur-3xl"></div>
+                    <!-- Золотистые блики -->
+                    <div class="absolute -top-20 -right-20 w-40 h-40 bg-yellow-500/20 rounded-full blur-3xl"></div>
+                    <div class="absolute -bottom-20 -left-20 w-40 h-40 bg-yellow-600/20 rounded-full blur-3xl"></div>
 
-                    <Link href="/" class="absolute top-4 left-4 text-white/60 hover:text-white transition-colors">
+                    <!-- Кнопка назад -->
+                    <Link href="/" class="absolute top-4 left-4 text-gray-400 hover:text-yellow-400 transition-colors">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                   d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
@@ -59,84 +62,92 @@ const submit = async () => {
                     </Link>
 
                     <div class="text-center">
-                        <div class="flex justify-center mb-4">
-                            <div class="p-3 rounded-2xl bg-gradient-to-br from-blue-500 to-purple-600 shadow-lg">
-                                <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                          d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                        <!-- Звезда вместо иконки -->
+                        <div class="flex justify-center mb-4 auth-form-item" style="animation-delay: 0s">
+                            <div
+                                class="p-3 rounded-2xl bg-gradient-to-br from-yellow-500/20 to-yellow-600/20 border border-yellow-500/30">
+                                <svg class="w-10 h-10 text-yellow-400 animate-pulse" fill="currentColor"
+                                     viewBox="0 0 24 24">
+                                    <path
+                                        d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2z"/>
                                 </svg>
                             </div>
                         </div>
-                        <h2 class="text-3xl font-extrabold text-white tracking-tight animate-slideDown">
-                            Вход в аккаунт
+                        <h2 class="text-3xl font-extrabold text-white tracking-tight auth-form-item"
+                            style="animation-delay: 0.05s">
+                            Добро пожаловать
                         </h2>
-                        <p class="mt-2 text-gray-300">
-                            Введите свои данные для входа
+                        <p class="mt-2 text-gray-400 auth-form-item" style="animation-delay: 0.1s">
+                            Войдите в свой аккаунт
                         </p>
                     </div>
 
                     <form class="mt-8 space-y-6" @submit.prevent="submit">
                         <div class="space-y-4">
-                            <div class="animate-slideRight" style="animation-delay: 0.1s">
-                                <label for="email" class="block text-sm font-medium text-gray-200 mb-1">Email</label>
+                            <!-- Email -->
+                            <div class="auth-form-item" style="animation-delay: 0.15s">
+                                <label for="email" class="block text-sm font-medium text-gray-300 mb-1">Email</label>
                                 <input
                                     id="email"
                                     v-model="form.email"
                                     type="email"
                                     required
-                                    class="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl
-                                           text-white placeholder-gray-400
-                                           focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent
+                                    class="w-full px-4 py-3 bg-gray-800/50 border rounded-xl
+                                           text-white placeholder-gray-500
+                                           focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent
                                            transition-all duration-300"
-                                    :class="{ 'border-red-500': errors.email }"
+                                    :class="errors.email ? 'border-red-500' : 'border-yellow-500/30'"
                                     placeholder="your@email.com"
                                 />
                                 <p v-if="errors.email" class="text-red-400 text-sm mt-1">{{ errors.email }}</p>
                             </div>
 
-                            <div class="animate-slideRight" style="animation-delay: 0.2s">
+                            <!-- Пароль -->
+                            <div class="auth-form-item" style="animation-delay: 0.2s">
                                 <label for="password"
-                                       class="block text-sm font-medium text-gray-200 mb-1">Пароль</label>
+                                       class="block text-sm font-medium text-gray-300 mb-1">Пароль</label>
                                 <input
                                     id="password"
                                     v-model="form.password"
                                     type="password"
                                     required
-                                    class="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl
-                                           text-white placeholder-gray-400
-                                           focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent
+                                    class="w-full px-4 py-3 bg-gray-800/50 border rounded-xl
+                                           text-white placeholder-gray-500
+                                           focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent
                                            transition-all duration-300"
-                                    :class="{ 'border-red-500': errors.password }"
+                                    :class="errors.password ? 'border-red-500' : 'border-yellow-500/30'"
                                     placeholder="••••••••"
                                 />
                                 <p v-if="errors.password" class="text-red-400 text-sm mt-1">{{ errors.password }}</p>
                             </div>
 
-                            <div class="flex items-center justify-between animate-slideRight"
-                                 style="animation-delay: 0.3s">
+                            <!-- Запомнить меня -->
+                            <div class="flex items-center justify-between auth-form-item"
+                                 style="animation-delay: 0.25s">
                                 <label class="flex items-center cursor-pointer">
                                     <input
                                         type="checkbox"
                                         v-model="form.remember"
-                                        class="w-4 h-4 bg-white/10 border-white/20 rounded
-                                               text-blue-600 focus:ring-blue-500 focus:ring-offset-0"
+                                        class="w-4 h-4 bg-gray-800/50 border-yellow-500/30 rounded
+                                               text-yellow-500 focus:ring-yellow-500 focus:ring-offset-0"
                                     />
-                                    <span class="ml-2 text-sm text-gray-300">Запомнить меня</span>
+                                    <span class="ml-2 text-sm text-gray-400">Запомнить меня</span>
                                 </label>
                             </div>
                         </div>
 
+                        <!-- Кнопка входа -->
                         <button
                             type="submit"
                             :disabled="processing"
                             class="group relative w-full flex justify-center items-center gap-2 py-3 px-4
                                    rounded-xl text-white font-semibold
-                                   bg-gradient-to-r from-blue-600 to-purple-600
-                                   hover:from-blue-500 hover:to-purple-500
+                                   bg-gradient-to-r from-yellow-600 to-yellow-500
+                                   hover:from-yellow-500 hover:to-yellow-400
                                    transform transition-all duration-300 hover:scale-105 active:scale-95
-                                   shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed
-                                   animate-slideUp"
-                            style="animation-delay: 0.4s"
+                                   shadow-lg hover:shadow-yellow-500/25 disabled:opacity-50 disabled:cursor-not-allowed
+                                   auth-form-item"
+                            style="animation-delay: 0.3s"
                         >
                             <svg v-if="processing" class="animate-spin h-5 w-5 text-white" fill="none"
                                  viewBox="0 0 24 24">
@@ -153,8 +164,10 @@ const submit = async () => {
                             </svg>
                         </button>
 
-                        <div class="text-center animate-fadeIn" style="animation-delay: 0.5s">
-                            <Link href="/register" class="text-sm text-blue-400 hover:text-blue-300 transition-colors">
+                        <!-- Ссылка на регистрацию -->
+                        <div class="text-center auth-form-item" style="animation-delay: 0.35s">
+                            <Link href="/register"
+                                  class="text-sm text-yellow-400 hover:text-yellow-300 transition-colors">
                                 Нет аккаунта? Зарегистрируйтесь
                             </Link>
                         </div>
@@ -188,28 +201,6 @@ const submit = async () => {
     }
 }
 
-@keyframes slideRight {
-    from {
-        opacity: 0;
-        transform: translateX(-20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateX(0);
-    }
-}
-
-@keyframes slideUp {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
 .animate-fadeInScale {
     animation: fadeInScale 0.5s ease-out;
 }
@@ -218,18 +209,19 @@ const submit = async () => {
     animation: slideDown 0.4s ease-out;
 }
 
-.animate-slideRight {
-    animation: slideRight 0.4s ease-out forwards;
+.auth-form-item {
     opacity: 0;
+    animation: slideUpFade 0.4s cubic-bezier(0.34, 1.2, 0.64, 1) forwards;
 }
 
-.animate-slideUp {
-    animation: slideUp 0.4s ease-out forwards;
-    opacity: 0;
-}
-
-.animate-fadeIn {
-    animation: fadeInScale 0.3s ease-out forwards;
-    opacity: 0;
+@keyframes slideUpFade {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 </style>

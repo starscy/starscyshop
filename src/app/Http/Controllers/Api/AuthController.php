@@ -26,7 +26,7 @@ class AuthController extends Controller
     {
         return Inertia::render('Auth/Login', [
             'videoUrl' => '/videos/hero-bg.mp4',
-            'posterUrl' => '/images/hero-poster.jpg',
+            'posterUrl' => '/images/hero-poster.webp',
         ]);
     }
 
@@ -37,7 +37,7 @@ class AuthController extends Controller
     {
         return Inertia::render('Auth/Register', [
             'videoUrl' => '/videos/hero-bg.mp4',
-            'posterUrl' => 'images/hero-poster.jpg',
+            'posterUrl' => 'images/hero-poster.webp',
         ]);
     }
 

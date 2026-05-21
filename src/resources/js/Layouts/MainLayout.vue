@@ -15,15 +15,6 @@ const props = defineProps({
         default: 'Звёздный шопинг в Серпухове. Тысячи товаров от местных продавцов. Покупай. Продавай. Сияй'
     }
 })
-
-onMounted(() => {
-    const videoUrl = 'https://starscy.ru/videos/hero-bg.mp4'
-    const link = document.createElement('link')
-    link.rel = 'preload'
-    link.as = 'video'
-    link.href = videoUrl
-    document.head.appendChild(link)
-})
 </script>
 
 <template>
@@ -65,3 +56,21 @@ onMounted(() => {
         </div>
     </div>
 </template>
+
+<style>
+/* Глобальная анимация для всех страниц */
+.page-transition {
+    animation: pageFadeUp 0.5s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+}
+
+@keyframes pageFadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+</style>
