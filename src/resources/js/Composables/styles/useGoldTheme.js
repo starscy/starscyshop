@@ -4,7 +4,6 @@ import { ref, computed } from 'vue'
 const themes = {
     gold: {
         name: 'gold',
-        // Tailwind-классы для кнопок
         bg: 'bg-gray-900/80',
         border: 'border-yellow-500/30',
         borderHover: 'hover:border-yellow-400/50',
@@ -14,13 +13,28 @@ const themes = {
         text: 'text-yellow-400',
         textHover: 'hover:text-yellow-300',
         inputBg: 'bg-gray-800/50',
-        // CSS-переменные для глобальных стилей (опционально)
         css: {
             '--theme-primary': '245, 158, 11',
             '--theme-primary-light': '253, 224, 71',
         }
     },
-    blue: {
+    amber: {  // Утро
+        name: 'amber',
+        bg: 'bg-gray-900/80',
+        border: 'border-amber-500/30',
+        borderHover: 'hover:border-amber-400/50',
+        gradientBtn: 'from-amber-600 to-amber-500',
+        gradientBtnHover: 'from-amber-500 to-amber-400',
+        gradientBlur: 'from-amber-500/10 to-amber-600/10',
+        text: 'text-amber-400',
+        textHover: 'hover:text-amber-300',
+        inputBg: 'bg-gray-800/50',
+        css: {
+            '--theme-primary': '245, 158, 11',
+            '--theme-primary-light': '251, 191, 36',
+        }
+    },
+    blue: {  // День
         name: 'blue',
         bg: 'bg-gray-900/80',
         border: 'border-blue-500/30',
@@ -36,7 +50,7 @@ const themes = {
             '--theme-primary-light': '96, 165, 250',
         }
     },
-    purple: {
+    purple: {  // Вечер
         name: 'purple',
         bg: 'bg-gray-900/80',
         border: 'border-purple-500/30',
@@ -54,13 +68,29 @@ const themes = {
     }
 }
 
+// Определение темы по времени суток
+function getThemeByTime() {
+    const hour = new Date().getHours()
+    if (hour >= 0 && hour < 6) return 'gold'      // Ночь
+    if (hour >= 6 && hour < 12) return 'amber'    // Утро
+    if (hour >= 12 && hour < 18) return 'blue'    // День
+    return 'purple'                                 // Вечер
+}
+
+// Реактивная текущая тема
 const currentThemeName = ref('gold')
 
-// Загрузка из localStorage
+// Загрузка из localStorage или автоопределение
 if (typeof window !== 'undefined') {
     const saved = localStorage.getItem('app_theme')
-    if (saved && themes[saved]) {
+    const manualOverride = localStorage.getItem('app_theme_manual')
+
+    if (saved && manualOverride === 'true') {
+        // Пользователь выбрал вручную
         currentThemeName.value = saved
+    } else {
+        // Авто по времени
+        currentThemeName.value = getThemeByTime()
     }
 }
 
@@ -77,15 +107,42 @@ function applyTheme(themeName) {
 // Инициализация
 if (typeof window !== 'undefined') {
     applyTheme(currentThemeName.value)
+
+    // Запускаем проверку времени каждую минуту (для автосмены)
+    setInterval(() => {
+        const manualOverride = localStorage.getItem('app_theme_manual')
+        if (manualOverride !== 'true') {
+            // Только если нет ручного выбора
+            const newTheme = getThemeByTime()
+            if (newTheme !== currentThemeName.value) {
+                currentThemeName.value = newTheme
+                localStorage.setItem('app_theme', newTheme)
+                applyTheme(newTheme)
+            }
+        }
+    }, 60000) // каждую минуту
 }
 
-export function setTheme(themeName) {
+// Смена темы (ручной выбор)
+export function setTheme(themeName, isManual = true) {
     if (themes[themeName]) {
         currentThemeName.value = themeName
         if (typeof window !== 'undefined') {
             localStorage.setItem('app_theme', themeName)
+            localStorage.setItem('app_theme_manual', isManual ? 'true' : 'false')
             applyTheme(themeName)
         }
+    }
+}
+
+// Сброс к авторежиму
+export function resetToAutoTheme() {
+    const autoTheme = getThemeByTime()
+    if (typeof window !== 'undefined') {
+        localStorage.removeItem('app_theme_manual')
+        localStorage.setItem('app_theme', autoTheme)
+        currentThemeName.value = autoTheme
+        applyTheme(autoTheme)
     }
 }
 
@@ -95,6 +152,7 @@ export function useGoldTheme() {
     return {
         theme: currentTheme,
         setTheme,
+        resetToAutoTheme,
         currentThemeName,
     }
 }

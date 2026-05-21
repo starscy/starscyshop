@@ -2,6 +2,7 @@
 import { reactive, ref } from 'vue'
 import { Link, Head, router } from '@inertiajs/vue3'
 import { useAuth } from '../../Composables/useAuth.js'
+import { useGoldTheme } from '@/Composables/styles/useGoldTheme'
 import Layout from '@/Layouts/MainLayout.vue'
 
 const props = defineProps({
@@ -9,6 +10,7 @@ const props = defineProps({
     posterUrl: String
 })
 
+const { theme } = useGoldTheme()
 const processing = ref(false)
 const errors = ref({})
 
@@ -45,16 +47,23 @@ const submit = async () => {
     >
         <div class="flex items-center justify-center min-h-screen px-4 py-8">
             <div class="max-w-md w-full auth-card-enter-active">
-                <!-- Карточка с анимацией выезжания -->
-                <div class="relative rounded-2xl bg-gray-900/80 backdrop-blur-xl border border-yellow-500/30 p-8 shadow-2xl
-                           transition-all duration-500 hover:border-yellow-400/50 hover:shadow-yellow-500/10">
-
-                    <!-- Золотистые блики -->
-                    <div class="absolute -top-20 -right-20 w-40 h-40 bg-yellow-500/20 rounded-full blur-3xl"></div>
-                    <div class="absolute -bottom-20 -left-20 w-40 h-40 bg-yellow-600/20 rounded-full blur-3xl"></div>
+                <!-- Карточка с динамической темой -->
+                <div
+                    class="relative rounded-2xl backdrop-blur-xl p-8 shadow-2xl transition-all duration-500"
+                    :class="[theme.bg, theme.border, `hover:${theme.borderHover}`]"
+                >
+                    <!-- Динамические блики -->
+                    <div
+                        class="absolute -top-20 -right-20 w-40 h-40 rounded-full blur-3xl"
+                        :class="`bg-${theme.name === 'gold' ? 'yellow-500' : theme.name}-500/20`"
+                    ></div>
+                    <div
+                        class="absolute -bottom-20 -left-20 w-40 h-40 rounded-full blur-3xl"
+                        :class="`bg-${theme.name === 'gold' ? 'yellow-600' : theme.name}-600/20`"
+                    ></div>
 
                     <!-- Кнопка назад -->
-                    <Link href="/" class="absolute top-4 left-4 text-gray-400 hover:text-yellow-400 transition-colors">
+                    <Link href="/" class="absolute top-4 left-4 text-gray-400 hover:text-theme transition-colors">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                   d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
@@ -62,19 +71,22 @@ const submit = async () => {
                     </Link>
 
                     <div class="text-center">
-                        <!-- Звезда вместо иконки -->
+                        <!-- Звезда с динамическим цветом -->
                         <div class="flex justify-center mb-4 auth-form-item" style="animation-delay: 0s">
                             <div
-                                class="p-3 rounded-2xl bg-gradient-to-br from-yellow-500/20 to-yellow-600/20 border border-yellow-500/30">
-                                <svg class="w-10 h-10 text-yellow-400 animate-pulse" fill="currentColor"
-                                     viewBox="0 0 24 24">
-                                    <path
-                                        d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2z"/>
+                                class="p-3 rounded-2xl border transition-all duration-300"
+                                :class="[`bg-gradient-to-br ${theme.gradientBlur}`, theme.border, `hover:${theme.borderHover}`]"
+                            >
+                                <svg
+                                    class="w-10 h-10 animate-pulse transition-colors duration-300"
+                                    :class="theme.text"
+                                    fill="currentColor" viewBox="0 0 24 24"
+                                >
+                                    <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2z"/>
                                 </svg>
                             </div>
                         </div>
-                        <h2 class="text-3xl font-extrabold text-white tracking-tight auth-form-item"
-                            style="animation-delay: 0.05s">
+                        <h2 class="text-3xl font-extrabold text-white tracking-tight auth-form-item" style="animation-delay: 0.05s">
                             Добро пожаловать
                         </h2>
                         <p class="mt-2 text-gray-400 auth-form-item" style="animation-delay: 0.1s">
@@ -92,11 +104,14 @@ const submit = async () => {
                                     v-model="form.email"
                                     type="email"
                                     required
-                                    class="w-full px-4 py-3 bg-gray-800/50 border rounded-xl
-                                           text-white placeholder-gray-500
-                                           focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent
-                                           transition-all duration-300"
-                                    :class="errors.email ? 'border-red-500' : 'border-yellow-500/30'"
+                                    class="w-full px-4 py-3 rounded-xl text-white placeholder-gray-500
+                                           focus:outline-none focus:ring-2 transition-all duration-300"
+                                    :class="[
+                                        theme.inputBg,
+                                        errors.email ? 'border-red-500' : theme.border,
+                                        `focus:ring-${theme.name === 'gold' ? 'yellow' : theme.name}-500`,
+                                        `focus:border-${theme.name === 'gold' ? 'yellow' : theme.name}-500`
+                                    ]"
                                     placeholder="your@email.com"
                                 />
                                 <p v-if="errors.email" class="text-red-400 text-sm mt-1">{{ errors.email }}</p>
@@ -104,70 +119,77 @@ const submit = async () => {
 
                             <!-- Пароль -->
                             <div class="auth-form-item" style="animation-delay: 0.2s">
-                                <label for="password"
-                                       class="block text-sm font-medium text-gray-300 mb-1">Пароль</label>
+                                <label for="password" class="block text-sm font-medium text-gray-300 mb-1">Пароль</label>
                                 <input
                                     id="password"
                                     v-model="form.password"
                                     type="password"
                                     required
-                                    class="w-full px-4 py-3 bg-gray-800/50 border rounded-xl
-                                           text-white placeholder-gray-500
-                                           focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent
-                                           transition-all duration-300"
-                                    :class="errors.password ? 'border-red-500' : 'border-yellow-500/30'"
+                                    class="w-full px-4 py-3 rounded-xl text-white placeholder-gray-500
+                                           focus:outline-none focus:ring-2 transition-all duration-300"
+                                    :class="[
+                                        theme.inputBg,
+                                        errors.password ? 'border-red-500' : theme.border,
+                                        `focus:ring-${theme.name === 'gold' ? 'yellow' : theme.name}-500`,
+                                        `focus:border-${theme.name === 'gold' ? 'yellow' : theme.name}-500`
+                                    ]"
                                     placeholder="••••••••"
                                 />
                                 <p v-if="errors.password" class="text-red-400 text-sm mt-1">{{ errors.password }}</p>
                             </div>
 
                             <!-- Запомнить меня -->
-                            <div class="flex items-center justify-between auth-form-item"
-                                 style="animation-delay: 0.25s">
+                            <div class="flex items-center justify-between auth-form-item" style="animation-delay: 0.25s">
                                 <label class="flex items-center cursor-pointer">
                                     <input
                                         type="checkbox"
                                         v-model="form.remember"
-                                        class="w-4 h-4 bg-gray-800/50 border-yellow-500/30 rounded
-                                               text-yellow-500 focus:ring-yellow-500 focus:ring-offset-0"
+                                        class="w-4 h-4 rounded focus:ring-offset-0 transition-all"
+                                        :class="[
+                                            theme.inputBg,
+                                            theme.border,
+                                            `focus:ring-${theme.name === 'gold' ? 'yellow' : theme.name}-500`,
+                                            `text-${theme.name === 'gold' ? 'yellow' : theme.name}-500`
+                                        ]"
                                     />
                                     <span class="ml-2 text-sm text-gray-400">Запомнить меня</span>
                                 </label>
                             </div>
                         </div>
 
-                        <!-- Кнопка входа -->
+                        <!-- Кнопка входа с градиентом темы -->
                         <button
                             type="submit"
                             :disabled="processing"
                             class="group relative w-full flex justify-center items-center gap-2 py-3 px-4
                                    rounded-xl text-white font-semibold
-                                   bg-gradient-to-r from-yellow-600 to-yellow-500
-                                   hover:from-yellow-500 hover:to-yellow-400
                                    transform transition-all duration-300 hover:scale-105 active:scale-95
-                                   shadow-lg hover:shadow-yellow-500/25 disabled:opacity-50 disabled:cursor-not-allowed
+                                   shadow-lg disabled:opacity-50 disabled:cursor-not-allowed
                                    auth-form-item"
+                            :class="[
+                                `bg-gradient-to-r ${theme.gradientBtn}`,
+                                `hover:${theme.gradientBtnHover}`,
+                                `hover:shadow-${theme.name === 'gold' ? 'yellow' : theme.name}-500/25`
+                            ]"
                             style="animation-delay: 0.3s"
                         >
-                            <svg v-if="processing" class="animate-spin h-5 w-5 text-white" fill="none"
-                                 viewBox="0 0 24 24">
-                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
-                                        stroke-width="4"></circle>
-                                <path class="opacity-75" fill="currentColor"
-                                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                            <svg v-if="processing" class="animate-spin h-5 w-5 text-white" fill="none" viewBox="0 0 24 24">
+                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                             </svg>
                             <span v-else>{{ processing ? 'Вход...' : 'Войти' }}</span>
-                            <svg v-if="!processing" class="w-5 h-5 group-hover:translate-x-1 transition-transform"
-                                 fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                      d="M9 5l7 7-7 7"></path>
+                            <svg v-if="!processing" class="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
                             </svg>
                         </button>
 
                         <!-- Ссылка на регистрацию -->
                         <div class="text-center auth-form-item" style="animation-delay: 0.35s">
-                            <Link href="/register"
-                                  class="text-sm text-yellow-400 hover:text-yellow-300 transition-colors">
+                            <Link
+                                href="/register"
+                                class="text-sm transition-colors duration-200"
+                                :class="[theme.text, theme.textHover]"
+                            >
                                 Нет аккаунта? Зарегистрируйтесь
                             </Link>
                         </div>
@@ -180,34 +202,17 @@ const submit = async () => {
 
 <style scoped>
 @keyframes fadeInScale {
-    from {
-        opacity: 0;
-        transform: scale(0.95);
-    }
-    to {
-        opacity: 1;
-        transform: scale(1);
-    }
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
 }
 
 @keyframes slideDown {
-    from {
-        opacity: 0;
-        transform: translateY(-20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
-.animate-fadeInScale {
-    animation: fadeInScale 0.5s ease-out;
-}
-
-.animate-slideDown {
-    animation: slideDown 0.4s ease-out;
-}
+.animate-fadeInScale { animation: fadeInScale 0.5s ease-out; }
+.animate-slideDown { animation: slideDown 0.4s ease-out; }
 
 .auth-form-item {
     opacity: 0;

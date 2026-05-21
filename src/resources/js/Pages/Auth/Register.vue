@@ -2,6 +2,7 @@
 import { reactive, ref } from 'vue'
 import { Link, Head, router } from '@inertiajs/vue3'
 import { useAuth } from '../../Composables/useAuth.js'
+import { useGoldTheme } from '@/Composables/styles/useGoldTheme'
 import Layout from '@/Layouts/MainLayout.vue'
 
 const props = defineProps({
@@ -9,6 +10,7 @@ const props = defineProps({
     posterUrl: String
 })
 
+const { theme } = useGoldTheme()
 const processing = ref(false)
 const errors = ref({})
 
@@ -46,23 +48,40 @@ const submit = async () => {
     >
         <div class="flex items-center justify-center min-h-screen px-4 py-8">
             <div class="max-w-md w-full auth-card-enter-active">
-                <!-- Карточка с анимацией выезжания -->
-                <div class="relative rounded-2xl bg-gray-900/80 backdrop-blur-xl border border-yellow-500/30 p-8 shadow-2xl
-                           transition-all duration-500 hover:border-yellow-400/50 hover:shadow-yellow-500/10">
+                <!-- Карточка с динамической темой -->
+                <div
+                    class="relative rounded-2xl backdrop-blur-xl p-8 shadow-2xl transition-all duration-500"
+                    :class="[theme.bg, theme.border, `hover:${theme.borderHover}`]"
+                >
+                    <!-- Динамические блики -->
+                    <div
+                        class="absolute -top-20 -right-20 w-40 h-40 rounded-full blur-3xl"
+                        :class="`bg-${theme.name === 'gold' ? 'yellow-500' : theme.name}-500/20`"
+                    ></div>
+                    <div
+                        class="absolute -bottom-20 -left-20 w-40 h-40 rounded-full blur-3xl"
+                        :class="`bg-${theme.name === 'gold' ? 'yellow-600' : theme.name}-600/20`"
+                    ></div>
 
-                    <div class="absolute -top-20 -right-20 w-40 h-40 bg-yellow-500/20 rounded-full blur-3xl"></div>
-                    <div class="absolute -bottom-20 -left-20 w-40 h-40 bg-yellow-600/20 rounded-full blur-3xl"></div>
-
-                    <Link href="/" class="absolute top-4 left-4 text-gray-400 hover:text-yellow-400 transition-colors">
+                    <!-- Кнопка назад -->
+                    <Link href="/" class="absolute top-4 left-4 text-gray-400 hover:text-theme transition-colors">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
                         </svg>
                     </Link>
 
                     <div class="text-center">
+                        <!-- Звезда с динамическим цветом -->
                         <div class="flex justify-center mb-4 auth-form-item" style="animation-delay: 0s">
-                            <div class="p-3 rounded-2xl bg-gradient-to-br from-yellow-500/20 to-yellow-600/20 border border-yellow-500/30">
-                                <svg class="w-10 h-10 text-yellow-400 animate-pulse" fill="currentColor" viewBox="0 0 24 24">
+                            <div
+                                class="p-3 rounded-2xl border transition-all duration-300"
+                                :class="[`bg-gradient-to-br ${theme.gradientBlur}`, theme.border, `hover:${theme.borderHover}`]"
+                            >
+                                <svg
+                                    class="w-10 h-10 animate-pulse transition-colors duration-300"
+                                    :class="theme.text"
+                                    fill="currentColor" viewBox="0 0 24 24"
+                                >
                                     <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2z"/>
                                 </svg>
                             </div>
@@ -77,6 +96,7 @@ const submit = async () => {
 
                     <form class="mt-8 space-y-6" @submit.prevent="submit">
                         <div class="space-y-4">
+                            <!-- Имя -->
                             <div class="auth-form-item" style="animation-delay: 0.15s">
                                 <label for="name" class="block text-sm font-medium text-gray-300 mb-1">Имя</label>
                                 <input
@@ -84,16 +104,20 @@ const submit = async () => {
                                     v-model="form.name"
                                     type="text"
                                     required
-                                    class="w-full px-4 py-3 bg-gray-800/50 border rounded-xl
-                                           text-white placeholder-gray-500
-                                           focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent
-                                           transition-all duration-300"
-                                    :class="errors.name ? 'border-red-500' : 'border-yellow-500/30'"
+                                    class="w-full px-4 py-3 rounded-xl text-white placeholder-gray-500
+                                           focus:outline-none focus:ring-2 transition-all duration-300"
+                                    :class="[
+                                        theme.inputBg,
+                                        errors.name ? 'border-red-500' : theme.border,
+                                        `focus:ring-${theme.name === 'gold' ? 'yellow' : theme.name}-500`,
+                                        `focus:border-${theme.name === 'gold' ? 'yellow' : theme.name}-500`
+                                    ]"
                                     placeholder="Ваше имя"
                                 />
                                 <p v-if="errors.name" class="text-red-400 text-sm mt-1">{{ errors.name }}</p>
                             </div>
 
+                            <!-- Email -->
                             <div class="auth-form-item" style="animation-delay: 0.2s">
                                 <label for="email" class="block text-sm font-medium text-gray-300 mb-1">Email</label>
                                 <input
@@ -101,16 +125,20 @@ const submit = async () => {
                                     v-model="form.email"
                                     type="email"
                                     required
-                                    class="w-full px-4 py-3 bg-gray-800/50 border rounded-xl
-                                           text-white placeholder-gray-500
-                                           focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent
-                                           transition-all duration-300"
-                                    :class="errors.email ? 'border-red-500' : 'border-yellow-500/30'"
+                                    class="w-full px-4 py-3 rounded-xl text-white placeholder-gray-500
+                                           focus:outline-none focus:ring-2 transition-all duration-300"
+                                    :class="[
+                                        theme.inputBg,
+                                        errors.email ? 'border-red-500' : theme.border,
+                                        `focus:ring-${theme.name === 'gold' ? 'yellow' : theme.name}-500`,
+                                        `focus:border-${theme.name === 'gold' ? 'yellow' : theme.name}-500`
+                                    ]"
                                     placeholder="your@email.com"
                                 />
                                 <p v-if="errors.email" class="text-red-400 text-sm mt-1">{{ errors.email }}</p>
                             </div>
 
+                            <!-- Пароль -->
                             <div class="auth-form-item" style="animation-delay: 0.25s">
                                 <label for="password" class="block text-sm font-medium text-gray-300 mb-1">Пароль</label>
                                 <input
@@ -118,16 +146,20 @@ const submit = async () => {
                                     v-model="form.password"
                                     type="password"
                                     required
-                                    class="w-full px-4 py-3 bg-gray-800/50 border rounded-xl
-                                           text-white placeholder-gray-500
-                                           focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent
-                                           transition-all duration-300"
-                                    :class="errors.password ? 'border-red-500' : 'border-yellow-500/30'"
+                                    class="w-full px-4 py-3 rounded-xl text-white placeholder-gray-500
+                                           focus:outline-none focus:ring-2 transition-all duration-300"
+                                    :class="[
+                                        theme.inputBg,
+                                        errors.password ? 'border-red-500' : theme.border,
+                                        `focus:ring-${theme.name === 'gold' ? 'yellow' : theme.name}-500`,
+                                        `focus:border-${theme.name === 'gold' ? 'yellow' : theme.name}-500`
+                                    ]"
                                     placeholder="••••••••"
                                 />
                                 <p v-if="errors.password" class="text-red-400 text-sm mt-1">{{ errors.password }}</p>
                             </div>
 
+                            <!-- Подтверждение пароля -->
                             <div class="auth-form-item" style="animation-delay: 0.3s">
                                 <label for="password_confirmation" class="block text-sm font-medium text-gray-300 mb-1">
                                     Подтверждение пароля
@@ -137,25 +169,33 @@ const submit = async () => {
                                     v-model="form.password_confirmation"
                                     type="password"
                                     required
-                                    class="w-full px-4 py-3 bg-gray-800/50 border border-yellow-500/30 rounded-xl
-                                           text-white placeholder-gray-500
-                                           focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent
-                                           transition-all duration-300"
+                                    class="w-full px-4 py-3 rounded-xl text-white placeholder-gray-500
+                                           focus:outline-none focus:ring-2 transition-all duration-300"
+                                    :class="[
+                                        theme.inputBg,
+                                        theme.border,
+                                        `focus:ring-${theme.name === 'gold' ? 'yellow' : theme.name}-500`,
+                                        `focus:border-${theme.name === 'gold' ? 'yellow' : theme.name}-500`
+                                    ]"
                                     placeholder="••••••••"
                                 />
                             </div>
                         </div>
 
+                        <!-- Кнопка регистрации с градиентом темы -->
                         <button
                             type="submit"
                             :disabled="processing"
                             class="group relative w-full flex justify-center items-center gap-2 py-3 px-4
                                    rounded-xl text-white font-semibold
-                                   bg-gradient-to-r from-yellow-600 to-yellow-500
-                                   hover:from-yellow-500 hover:to-yellow-400
                                    transform transition-all duration-300 hover:scale-105 active:scale-95
-                                   shadow-lg hover:shadow-yellow-500/25 disabled:opacity-50 disabled:cursor-not-allowed
+                                   shadow-lg disabled:opacity-50 disabled:cursor-not-allowed
                                    auth-form-item"
+                            :class="[
+                                `bg-gradient-to-r ${theme.gradientBtn}`,
+                                `hover:${theme.gradientBtnHover}`,
+                                `hover:shadow-${theme.name === 'gold' ? 'yellow' : theme.name}-500/25`
+                            ]"
                             style="animation-delay: 0.35s"
                         >
                             <svg v-if="processing" class="animate-spin h-5 w-5 text-white" fill="none" viewBox="0 0 24 24">
@@ -168,8 +208,13 @@ const submit = async () => {
                             </svg>
                         </button>
 
+                        <!-- Ссылка на вход -->
                         <div class="text-center auth-form-item" style="animation-delay: 0.4s">
-                            <Link href="/login" class="text-sm text-yellow-400 hover:text-yellow-300 transition-colors">
+                            <Link
+                                href="/login"
+                                class="text-sm transition-colors duration-200"
+                                :class="[theme.text, theme.textHover]"
+                            >
                                 Уже есть аккаунт? Войдите
                             </Link>
                         </div>
