@@ -5,6 +5,7 @@ const themes = {
     gold: {
         name: 'gold',
         bg: 'bg-gray-900/80',
+        bgDark: 'bg-gray-900',
         border: 'border-yellow-500/30',
         borderHover: 'hover:border-yellow-400/50',
         gradientBtn: 'from-yellow-600 to-yellow-500',
@@ -21,6 +22,7 @@ const themes = {
     amber: {  // Утро
         name: 'amber',
         bg: 'bg-gray-900/80',
+        bgDark: 'bg-gray-900',
         border: 'border-amber-500/30',
         borderHover: 'hover:border-amber-400/50',
         gradientBtn: 'from-amber-600 to-amber-500',
@@ -37,6 +39,7 @@ const themes = {
     blue: {  // День
         name: 'blue',
         bg: 'bg-gray-900/80',
+        bgDark: 'bg-gray-900',
         border: 'border-blue-500/30',
         borderHover: 'hover:border-blue-400/50',
         gradientBtn: 'from-blue-600 to-blue-500',
@@ -53,6 +56,7 @@ const themes = {
     purple: {  // Вечер
         name: 'purple',
         bg: 'bg-gray-900/80',
+        bgDark: 'bg-gray-900',
         border: 'border-purple-500/30',
         borderHover: 'hover:border-purple-400/50',
         gradientBtn: 'from-purple-600 to-purple-500',
@@ -154,5 +158,26 @@ export function useGoldTheme() {
         setTheme,
         resetToAutoTheme,
         currentThemeName,
+    }
+}
+
+export const THEME_COLOR_MAP = {
+    gold: 'yellow',
+    amber: 'amber',
+    blue: 'blue',
+    purple: 'purple'
+}
+
+export function getTwClasses(themeName) {
+    const color = THEME_COLOR_MAP[themeName] || themeName
+    return {
+        text: `text-${color}-400`,
+        textHover: `hover:text-${color}-300`,
+        border: `border-${color}-500/30`,
+        borderHover: `hover:border-${color}-400/50`,
+        ring: `focus:ring-${color}-500`,
+        gradientFrom: `from-${color}-600`,
+        gradientTo: `to-${color}-500`,
+        bgSoft: `bg-${color}-500/10`,
     }
 }
