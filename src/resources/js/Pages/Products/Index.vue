@@ -73,94 +73,96 @@ watch(
 
 
 <template>
-    <ProductLayout>
-        <div class="container mx-auto px-4 py-8">
-            <!-- Фильтры -->
-            <div class="bg-white rounded-lg shadow-md p-6 mb-8">
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">
-                            Категория
-                        </label>
-                        <select
-                            v-model="filters.category_id"
-                            @change="applyFilters"
-                            class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                        >
-                            <option :value="null">Все категории</option>
-                            <option
-                                v-for="category in categories"
-                                :key="category.id"
-                                :value="category.id"
+    <div class="page-enter-active">
+        <ProductLayout>
+            <div class="container mx-auto px-4 py-8">
+                <!-- Фильтры -->
+                <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">
+                                Категория
+                            </label>
+                            <select
+                                v-model="filters.category_id"
+                                @change="applyFilters"
+                                class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                             >
-                                {{ category.name }}
-                            </option>
-                        </select>
-                    </div>
+                                <option :value="null">Все категории</option>
+                                <option
+                                    v-for="category in categories"
+                                    :key="category.id"
+                                    :value="category.id"
+                                >
+                                    {{ category.name }}
+                                </option>
+                            </select>
+                        </div>
 
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">
-                            Сортировать по
-                        </label>
-                        <select
-                            v-model="filters.sort_by"
-                            @change="applyFilters"
-                            class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                        >
-                            <option :value="null">По умолчанию</option>
-                            <option value="name">Названию</option>
-                            <option value="price">Цене</option>
-                            <option value="created_at">Дате добавления</option>
-                        </select>
-                    </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">
+                                Сортировать по
+                            </label>
+                            <select
+                                v-model="filters.sort_by"
+                                @change="applyFilters"
+                                class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                            >
+                                <option :value="null">По умолчанию</option>
+                                <option value="name">Названию</option>
+                                <option value="price">Цене</option>
+                                <option value="created_at">Дате добавления</option>
+                            </select>
+                        </div>
 
-                    <div v-if="filters.sort_by">
-                        <label class="block text-sm font-medium text-gray-700 mb-2">
-                            Направление
-                        </label>
-                        <select
-                            v-model="filters.direction"
-                            @change="applyFilters"
-                            class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                        >
-                            <option value="asc">По возрастанию</option>
-                            <option value="desc">По убыванию</option>
-                        </select>
-                    </div>
+                        <div v-if="filters.sort_by">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">
+                                Направление
+                            </label>
+                            <select
+                                v-model="filters.direction"
+                                @change="applyFilters"
+                                class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                            >
+                                <option value="asc">По возрастанию</option>
+                                <option value="desc">По убыванию</option>
+                            </select>
+                        </div>
 
-                    <div class="mt-4 pt-4 border-t border-gray-200">
-                        <button
-                            @click="resetFilters"
-                            class="text-sm text-gray-500 hover:text-gray-700 underline disabled:opacity-50"
-                            :disabled="!hasActiveFilters"
-                        >
-                            Сбросить фильтры
-                        </button>
+                        <div class="mt-4 pt-4 border-t border-gray-200">
+                            <button
+                                @click="resetFilters"
+                                class="text-sm text-gray-500 hover:text-gray-700 underline disabled:opacity-50"
+                                :disabled="!hasActiveFilters"
+                            >
+                                Сбросить фильтры
+                            </button>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- Товары -->
-            <div v-if="loading" class="text-center py-12">
-                <div class="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
-            </div>
+                <!-- Товары -->
+                <div v-if="loading" class="text-center py-12">
+                    <div class="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+                </div>
 
-            <div v-else-if="products.data.length === 0" class="text-center py-12 bg-gray-50 rounded-lg">
-                <p class="text-gray-500 text-lg">Товары не найдены</p>
-            </div>
+                <div v-else-if="products.data.length === 0" class="text-center py-12 bg-gray-50 rounded-lg">
+                    <p class="text-gray-500 text-lg">Товары не найдены</p>
+                </div>
 
-            <div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                <ProductCard
-                    v-for="product in products.data"
-                    :key="product.id"
-                    :product="product"
-                />
-            </div>
+                <div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                    <ProductCard
+                        v-for="product in products.data"
+                        :key="product.id"
+                        :product="product"
+                    />
+                </div>
 
-            <!-- Пагинация -->
-            <div v-if="products.links" class="mt-8">
-                <Pagination :links="products.links"/>
+                <!-- Пагинация -->
+                <div v-if="products.links" class="mt-8">
+                    <Pagination :links="products.links"/>
+                </div>
             </div>
-        </div>
-    </ProductLayout>
+        </ProductLayout>
+    </div>
 </template>

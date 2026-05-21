@@ -1,7 +1,7 @@
 <script setup>
 import { Head } from '@inertiajs/vue3'
 import VideoBackground from './VideoBackground.vue'
-import {onMounted} from "vue";
+import { usePage } from '@inertiajs/vue3'
 
 const props = defineProps({
     videoUrl: String,
@@ -51,26 +51,22 @@ const props = defineProps({
         </Head>
 
         <VideoBackground :video-url="videoUrl" :poster-url="posterUrl" />
-        <div class="relative z-10">
-            <slot />
-        </div>
+        <Transition name="page" mode="out-in">
+            <div class="relative z-10" :key="$page.url">
+                <slot />
+            </div>
+        </Transition>
     </div>
 </template>
 
 <style>
-/* Глобальная анимация для всех страниц */
-.page-transition {
-    animation: pageFadeUp 0.5s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+/* Теперь name="fade" совпадает с классами */
+.fade-enter-active,
+.fade-leave-active {
+    transition: opacity 0.3s ease;
 }
-
-@keyframes pageFadeUp {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+.fade-enter-from,
+.fade-leave-to {
+    opacity: 0;
 }
 </style>

@@ -1,30 +1,30 @@
 <script setup>
 import { onMounted, onBeforeUnmount } from 'vue'
+import { usePage } from '@inertiajs/vue3'
 
-const { router } = usePage()
+const { component } = usePage()
 
-onMounted(() => {
-    document.body.classList.add('page-transition-ready')
-})
+// Показывать оверлей только при смене компонента
+const showOverlay = ref(false)
 
-onBeforeUnmount(() => {
-    document.body.classList.remove('page-transition-ready')
+watch(() => component.value, () => {
+    showOverlay.value = true
+    setTimeout(() => showOverlay.value = false, 500)
 })
 </script>
 
 <template>
     <div class="transition-container">
-        <div class="transition-overlay"></div>
+        <!-- Оверлей только когда showOverlay === true -->
+        <div
+            v-if="showOverlay"
+            class="transition-overlay"
+        ></div>
         <slot />
     </div>
 </template>
 
 <style scoped>
-.transition-container {
-    position: relative;
-    animation: fadeSlideUp 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1);
-}
-
 .transition-overlay {
     position: fixed;
     inset: 0;
@@ -33,18 +33,6 @@ onBeforeUnmount(() => {
     z-index: 999;
     animation: fadeOut 0.5s ease-out forwards;
 }
-
-@keyframes fadeSlideUp {
-    from {
-        opacity: 0;
-        transform: translateY(30px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
 @keyframes fadeOut {
     from { opacity: 1; }
     to { opacity: 0; visibility: hidden; }
