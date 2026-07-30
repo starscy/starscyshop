@@ -36,7 +36,7 @@ const icons = {
         :video-url="videoUrl"
         :poster-url="posterUrl"
         title="Караваев Вадим | Создание сайтов и Telegram-ботов"
-        description="Разработка сайтов, магазинов и Telegram-ботов под ключ. Laravel, Vue, Docker."
+        description="Разработка сайтов, интернет-магазинов и Telegram-ботов под ключ в Серпухове и Москве. Laravel, Vue, Docker. Адаптивно, быстро, с админ-панелью."
     >
         <div class="flex flex-col items-center justify-center min-h-screen px-4">
             <div class="text-center mb-12 animate-fadeIn">

@@ -6,13 +6,14 @@ import { usePage } from '@inertiajs/vue3'
 const props = defineProps({
     videoUrl: String,
     posterUrl: String,
+    // Дефолтные значения только если страница не передала свои
     title: {
         type: String,
-        default: 'Звёздный шопинг в Серпухове | Starscy'
+        default: 'Караваев Вадим | Портфолио Fullstack разработчика'
     },
     description: {
         type: String,
-        default: 'Звёздный шопинг в Серпухове. Тысячи товаров от местных продавцов. Покупай. Продавай. Сияй'
+        default: 'Портфолио разработчика Караваева Вадима. Laravel, Vue, Docker. Создаю современные веб-приложения.'
     }
 })
 </script>
@@ -20,8 +21,10 @@ const props = defineProps({
 <template>
     <div class="relative min-h-screen">
         <Head>
+            <!-- Используем переданный title, если есть -->
             <title>{{ title }}</title>
             <meta name="description" :content="description" />
+
             <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
             <meta name="theme-color" content="#1f2937" />
             <meta name="format-detection" content="telephone=no" />
@@ -49,8 +52,6 @@ const props = defineProps({
             <!-- Favicon -->
             <link rel="icon" type="image/x-icon" href="/favicon.ico" />
         </Head>
-
-        <!-- УДАЛИЛИ VIDEO BACKGROUND отсюда -->
 
         <Transition name="page" mode="out-in">
             <div class="relative z-10" :key="$page.url">
