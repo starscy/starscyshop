@@ -15,6 +15,8 @@ defineProps({
 const { isAuthenticated, userName } = useAuth()
 const { theme, iconColor, mutedColor } = useTheme()
 
+const currentThemeName = computed(() => theme.value.name)
+
 const greeting = computed(() => {
     const hour = new Date().getHours()
     if (hour >= 22 || hour < 4) return 'Доброй ночи'
@@ -57,7 +59,7 @@ const icons = {
                 </p>
 
                 <div class="mt-6">
-                    <ThemeSwitcher/>
+                    <ThemeSwitcher :current-theme="currentThemeName" />
                 </div>
             </div>
 

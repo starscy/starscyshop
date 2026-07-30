@@ -1,13 +1,18 @@
 <script setup>
 import { useTheme } from '@/Composables/styles/useTheme'
 
-const { setTheme, resetToAutoTheme, currentThemeName } = useTheme()
+// Получаем текущую тему из родителя (Home.vue)
+const props = defineProps({
+    currentTheme: { type: String, required: true }
+})
+
+const { setTheme, resetToAutoTheme } = useTheme()
 
 const themes = [
+    { name: 'gold', label: '🌙', color: 'rgb(245, 158, 11)' },
     { name: 'amber', label: '☀️', color: 'rgb(245, 158, 11)' },
     { name: 'blue', label: '🌞', color: 'rgb(59, 130, 246)' },
-    { name: 'purple', label: '🌅', color: 'rgb(168, 85, 247)' },
-    { name: 'gold', label: '🌙', color: 'rgb(245, 158, 11)' }
+    { name: 'purple', label: '🌅', color: 'rgb(168, 85, 247)' }
 ]
 </script>
 
@@ -19,7 +24,7 @@ const themes = [
                 :key="t.name"
                 @click="setTheme(t.name, true)"
                 class="px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 cursor-pointer"
-                :style="currentThemeName === t.name
+                :style="currentTheme === t.name
                     ? { backgroundColor: t.color, color: 'black', boxShadow: `0 0 12px ${t.color}` }
                     : { backgroundColor: '#374151', color: '#9ca3af' }"
             >
