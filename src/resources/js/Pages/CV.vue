@@ -12,8 +12,10 @@ const { theme } = useGoldTheme()
         title="Караваев Вадим | Резюме Fullstack-разработчика"
         description="Резюме Караваева Вадима. Fullstack-разработчик с опытом 3+ года. Laravel, Vue, React, Docker."
     >
+        <!-- Убираем внешний CSS, теперь подключаем через npm -->
         <Head>
-            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+            <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'" />
+            <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" /></noscript>
         </Head>
 
         <div class="min-h-screen py-12 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto">
@@ -23,12 +25,13 @@ const { theme } = useGoldTheme()
                  :class="[theme.bg, theme.border]">
 
                 <div class="flex flex-col md:flex-row gap-8 items-center md:items-start">
-                    <!-- Фото -->
+                    <!-- Фото с ленивой загрузкой -->
                     <div class="flex-shrink-0">
                         <div class="w-32 h-32 md:w-40 md:h-40 rounded-full overflow-hidden border-4"
                              :class="`border-${theme.name === 'gold' ? 'yellow' : theme.name}-500/50`">
                             <img :src="personal.photo" alt="Караваев Вадим"
                                  class="w-full h-full object-cover"
+                                 loading="lazy"
                                  @error="$event.target.src = 'https://ui-avatars.com/api/?name=Вадим+Караваев&background=random&size=200'"
                             />
                         </div>
