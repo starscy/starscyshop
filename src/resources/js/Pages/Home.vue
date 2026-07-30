@@ -26,7 +26,8 @@ const greeting = computed(() => {
 const icons = {
     projects: 'M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z',
     contact: 'M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z',
-    admin: 'M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z'
+    admin: 'M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z',
+    shop: 'M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-1.5 1.5M17 13l1.5 1.5M9 21h6M12 18v3M4 5h16'
 }
 </script>
 
@@ -61,7 +62,7 @@ const icons = {
                 <ActionButton
                     href="/cv"
                     :icon="icons.projects"
-                    title="Мои проекты"
+                    title="Моё портфолио"
                     subtitle="Посмотрите, что я умею делать"
                     :theme="theme"
                     :iconColor="iconColor"

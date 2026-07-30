@@ -79,6 +79,57 @@ const contacts = {
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8 animate-slideUp">
 
+                <!-- Прямые контакты -->
+                <div class="rounded-2xl backdrop-blur-xl p-8" :class="[theme.bg, theme.border]">
+                    <h2 class="text-2xl font-bold text-white mb-6">Прямые способы связи</h2>
+
+                    <div class="space-y-6">
+                        <a :href="`tel:${contacts.phone}`"
+                           class="flex items-center gap-4 p-4 rounded-xl border border-gray-600/50 hover:border-gray-400/80 transition-all group">
+                            <div class="w-12 h-12 rounded-full flex items-center justify-center bg-white/10 group-hover:bg-white/20 transition-colors">
+                                <i class="fas fa-phone text-2xl text-white"></i>
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-400">Телефон</p>
+                                <p class="text-white font-medium">{{ contacts.phone }}</p>
+                            </div>
+                        </a>
+
+                        <a :href="`mailto:${contacts.email}`"
+                           class="flex items-center gap-4 p-4 rounded-xl border border-gray-600/50 hover:border-gray-400/80 transition-all group">
+                            <div class="w-12 h-12 rounded-full flex items-center justify-center bg-white/10 group-hover:bg-white/20 transition-colors">
+                                <i class="fas fa-envelope text-2xl text-white"></i>
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-400">Email</p>
+                                <p class="text-white font-medium">{{ contacts.email }}</p>
+                            </div>
+                        </a>
+
+                        <a :href="`https://t.me/${contacts.telegram.replace('@', '')}`" target="_blank"
+                           class="flex items-center gap-4 p-4 rounded-xl border border-gray-600/50 hover:border-gray-400/80 transition-all group">
+                            <div class="w-12 h-12 rounded-full flex items-center justify-center bg-white/10 group-hover:bg-white/20 transition-colors">
+                                <i class="fab fa-telegram-plane text-2xl text-white"></i>
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-400">Telegram</p>
+                                <p class="text-white font-medium">{{ contacts.telegram }}</p>
+                            </div>
+                        </a>
+
+                        <a :href="`https://${contacts.github}`" target="_blank"
+                           class="flex items-center gap-4 p-4 rounded-xl border border-gray-600/50 hover:border-gray-400/80 transition-all group">
+                            <div class="w-12 h-12 rounded-full flex items-center justify-center bg-white/10 group-hover:bg-white/20 transition-colors">
+                                <i class="fab fa-github text-2xl text-white"></i>
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-400">GitHub</p>
+                                <p class="text-white font-medium">{{ contacts.github }}</p>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
                 <!-- Форма обратной связи -->
                 <div class="rounded-2xl backdrop-blur-xl p-8" :class="[theme.bg, theme.border]">
                     <h2 class="text-2xl font-bold text-white mb-6">Отправить сообщение</h2>
@@ -143,57 +194,6 @@ const contacts = {
                             <span v-else>Отправить сообщение</span>
                         </button>
                     </form>
-                </div>
-
-                <!-- Прямые контакты -->
-                <div class="rounded-2xl backdrop-blur-xl p-8" :class="[theme.bg, theme.border]">
-                    <h2 class="text-2xl font-bold text-white mb-6">Другие способы связи</h2>
-
-                    <div class="space-y-6">
-                        <a :href="`mailto:${contacts.email}`"
-                           class="flex items-center gap-4 p-4 rounded-xl border border-gray-600/50 hover:border-gray-400/80 transition-all group">
-                            <div class="w-12 h-12 rounded-full flex items-center justify-center bg-white/10 group-hover:bg-white/20 transition-colors">
-                                <i class="fas fa-envelope text-2xl text-white"></i>
-                            </div>
-                            <div>
-                                <p class="text-sm text-gray-400">Email</p>
-                                <p class="text-white font-medium">{{ contacts.email }}</p>
-                            </div>
-                        </a>
-
-                        <a :href="`https://t.me/${contacts.telegram.replace('@', '')}`" target="_blank"
-                           class="flex items-center gap-4 p-4 rounded-xl border border-gray-600/50 hover:border-gray-400/80 transition-all group">
-                            <div class="w-12 h-12 rounded-full flex items-center justify-center bg-white/10 group-hover:bg-white/20 transition-colors">
-                                <i class="fab fa-telegram-plane text-2xl text-white"></i>
-                            </div>
-                            <div>
-                                <p class="text-sm text-gray-400">Telegram</p>
-                                <p class="text-white font-medium">{{ contacts.telegram }}</p>
-                            </div>
-                        </a>
-
-                        <a :href="`https://${contacts.github}`" target="_blank"
-                           class="flex items-center gap-4 p-4 rounded-xl border border-gray-600/50 hover:border-gray-400/80 transition-all group">
-                            <div class="w-12 h-12 rounded-full flex items-center justify-center bg-white/10 group-hover:bg-white/20 transition-colors">
-                                <i class="fab fa-github text-2xl text-white"></i>
-                            </div>
-                            <div>
-                                <p class="text-sm text-gray-400">GitHub</p>
-                                <p class="text-white font-medium">{{ contacts.github }}</p>
-                            </div>
-                        </a>
-
-                        <a :href="`tel:${contacts.phone}`"
-                           class="flex items-center gap-4 p-4 rounded-xl border border-gray-600/50 hover:border-gray-400/80 transition-all group">
-                            <div class="w-12 h-12 rounded-full flex items-center justify-center bg-white/10 group-hover:bg-white/20 transition-colors">
-                                <i class="fas fa-phone text-2xl text-white"></i>
-                            </div>
-                            <div>
-                                <p class="text-sm text-gray-400">Телефон</p>
-                                <p class="text-white font-medium">{{ contacts.phone }}</p>
-                            </div>
-                        </a>
-                    </div>
                 </div>
             </div>
 
