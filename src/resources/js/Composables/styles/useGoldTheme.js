@@ -153,11 +153,32 @@ export function resetToAutoTheme() {
 export const currentTheme = computed(() => themes[currentThemeName.value])
 
 export function useGoldTheme() {
+
+    const iconColor = computed(() => {
+        const name = currentThemeName.value;
+        if (name === 'gold') return '#fbbf24';       // Золотой (ночь)
+        if (name === 'amber') return '#f59e0b';      // Тёплый янтарь (утро)
+        if (name === 'blue') return '#60a5fa';       // Небесно-голубой (день)
+        if (name === 'purple') return '#a78bfa';     // Мягкий фиолет (вечер)
+        return '#fbbf24';
+    });
+
+    const mutedColor = computed(() => {
+        const name = currentThemeName.value;
+        if (name === 'gold') return 'rgba(251, 191, 36, 0.6)';
+        if (name === 'amber') return 'rgba(245, 158, 11, 0.6)';
+        if (name === 'blue') return 'rgba(96, 165, 250, 0.6)';
+        if (name === 'purple') return 'rgba(167, 139, 250, 0.6)';
+        return 'rgba(251, 191, 36, 0.6)';
+    });
+
     return {
         theme: currentTheme,
         setTheme,
         resetToAutoTheme,
         currentThemeName,
+        iconColor,
+        mutedColor,
     }
 }
 
