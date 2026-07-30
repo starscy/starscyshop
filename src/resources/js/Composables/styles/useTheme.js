@@ -1,4 +1,4 @@
-// composables/styles/useGoldTheme.js
+// composables/styles/useTheme.js
 import { ref, computed } from 'vue'
 
 const themes = {
@@ -152,7 +152,7 @@ export function resetToAutoTheme() {
 
 export const currentTheme = computed(() => themes[currentThemeName.value])
 
-export function useGoldTheme() {
+export function useTheme() {
 
     const iconColor = computed(() => {
         const name = currentThemeName.value;
@@ -172,6 +172,29 @@ export function useGoldTheme() {
         return 'rgba(251, 191, 36, 0.6)';
     });
 
+    const videoByTime = computed(() => {
+        // Определяем, мобильное устройство или нет (ширина < 768px)
+        const isMobile = typeof window !== 'undefined' && window.innerWidth < 768
+        const suffix = isMobile ? '-mobile' : ''
+
+        // Если пользователь выбрал тему вручную — используем видео по теме
+        const manualOverride = localStorage.getItem('app_theme_manual')
+        if (manualOverride === 'true') {
+            const name = currentThemeName.value
+            if (name === 'gold') return `/videos/hero-bg${suffix}.mp4`
+            if (name === 'amber') return `/videos/morning${suffix}.mp4`
+            if (name === 'blue') return `/videos/day${suffix}.mp4`
+            if (name === 'purple') return `/videos/evening${suffix}.mp4`
+        }
+
+        // Иначе — по времени суток
+        const hour = new Date().getHours()
+        if (hour >= 22 || hour < 4) return `/videos/hero-bg${suffix}.mp4`
+        if (hour >= 4 && hour < 10) return `/videos/morning${suffix}.mp4`
+        if (hour >= 10 && hour < 16) return `/videos/day${suffix}.mp4`
+        return `/videos/evening${suffix}.mp4`
+    })
+
     return {
         theme: currentTheme,
         setTheme,
@@ -179,6 +202,7 @@ export function useGoldTheme() {
         currentThemeName,
         iconColor,
         mutedColor,
+        videoByTime
     }
 }
 

@@ -1,7 +1,7 @@
 <script setup>
-import { useGoldTheme } from '@/Composables/styles/useGoldTheme'
+import { useTheme } from '@/Composables/styles/useTheme'
 
-const { setTheme, resetToAutoTheme, currentThemeName } = useGoldTheme()
+const { setTheme, resetToAutoTheme, currentThemeName } = useTheme()
 
 const themes = [
     { name: 'amber', label: '☀️', color: 'rgb(245, 158, 11)' },

@@ -2,7 +2,7 @@
 import { reactive, ref } from 'vue'
 import { Link, Head, router } from '@inertiajs/vue3'
 import { useAuth } from '../../Composables/useAuth.js'
-import { useGoldTheme } from '@/Composables/styles/useGoldTheme'
+import { useTheme } from '@/Composables/styles/useTheme'
 import Layout from '@/Layouts/MainLayout.vue'
 
 const props = defineProps({
@@ -10,7 +10,7 @@ const props = defineProps({
     posterUrl: String
 })
 
-const { theme } = useGoldTheme()
+const { theme } = useTheme()
 const processing = ref(false)
 const errors = ref({})
 

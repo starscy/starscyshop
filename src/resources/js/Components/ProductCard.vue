@@ -2,7 +2,7 @@
 <script setup>
 import {Link} from '@inertiajs/vue3'
 import {useFormatters} from '@/Composables/useFormatters'
-import {getTwClasses} from '@/Composables/styles/useGoldTheme'
+import {getTwClasses} from '@/Composables/styles/useTheme'
 import {computed} from "vue";
 
 const props = defineProps({

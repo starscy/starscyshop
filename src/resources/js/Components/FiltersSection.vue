@@ -1,7 +1,7 @@
 <!-- resources/js/Components/FiltersSection.vue -->
 <script setup>
 import { computed } from 'vue'
-import { useGoldTheme } from '@/Composables/styles/useGoldTheme'
+import { useTheme } from '@/Composables/styles/useTheme'
 
 const props = defineProps({
     categories: Array,
@@ -10,7 +10,7 @@ const props = defineProps({
 
 const emit = defineEmits(['update:category', 'update:sortBy', 'update:direction', 'reset'])
 
-const { theme } = useGoldTheme()
+const { theme } = useTheme()
 
 // Состояния фильтров (двусторонняя привязка через computed)
 const categoryId = computed({

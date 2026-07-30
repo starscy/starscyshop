@@ -1,10 +1,10 @@
 <script setup>
 import { Head, Link } from '@inertiajs/vue3'
 import Layout from '@/Layouts/MainLayout.vue'
-import { useGoldTheme } from '@/Composables/styles/useGoldTheme'
+import { useTheme } from '@/Composables/styles/useTheme'
 import { personal, experience, personalProjects, skills } from '@/Data/cvData'
 
-const { theme } = useGoldTheme()
+const { theme } = useTheme()
 </script>
 
 <template>

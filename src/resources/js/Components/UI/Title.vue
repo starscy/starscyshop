@@ -1,7 +1,7 @@
 <script setup>
-import { useGoldTheme } from '@/Composables/styles/useGoldTheme'
+import { useTheme } from '@/Composables/styles/useTheme'
 
-const { theme } = useGoldTheme()
+const { theme } = useTheme()
 
 defineProps({
     text: { type: String, required: true }

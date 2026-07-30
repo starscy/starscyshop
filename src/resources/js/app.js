@@ -1,11 +1,11 @@
 import './bootstrap'
 import '../css/app.css'
 
-import { createApp, h } from 'vue'
+import {computed, createApp, h} from 'vue'
 import { createInertiaApp } from '@inertiajs/vue3'
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers'
 import { ZiggyVue } from '../../vendor/tightenco/ziggy'
-
+import {useTheme} from "@/Composables/styles/useTheme.js";
 import VideoBackground from '@/Layouts/VideoBackground.vue'
 
 createInertiaApp({
@@ -21,15 +21,16 @@ createInertiaApp({
         return resolvePageComponent(`./Pages/${name}.vue`, import.meta.glob('./Pages/**/*.vue'))
     },
     setup({ el, App, props, plugin }) {
-        // Получаем videoUrl и posterUrl из пропсов страницы
-        const videoUrl = props.initialPage.props?.videoUrl || '/videos/hero-bg.mp4'
-        const posterUrl = props.initialPage.props?.posterUrl || '/images/hero-poster.webp'
+        const { videoByTime } = useTheme()
+
+        // Создаём реактивный computed, который возвращает строку пути
+        const videoUrl = computed(() => videoByTime.value)
+
+        const posterUrl = '/images/hero-poster.webp'
 
         const app = createApp({
             render: () => h('div', { class: 'relative min-h-screen' }, [
-                // Видео на уровне корня — живёт всё время
-                h(VideoBackground, { videoUrl, posterUrl }),
-                // Слот для страниц
+                h(VideoBackground, { videoUrl: videoUrl.value, posterUrl }),
                 h(App, { ...props })
             ])
         })

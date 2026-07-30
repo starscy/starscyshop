@@ -5,7 +5,7 @@ import ProductCard from '@/Components/ProductCard.vue'
 import Pagination from '@/Components/Pagination.vue'
 import ProductLayout from "@/Layouts/ProductLayout.vue"
 import FiltersSection from '@/Components/FiltersSection.vue'
-import { useGoldTheme } from "../../Composables/styles/useGoldTheme.js"
+import { useTheme} from "@/Composables/styles/useTheme.js";
 
 const props = defineProps({
     products: Object,
@@ -13,7 +13,7 @@ const props = defineProps({
     filters: Object
 })
 
-const { theme } = useGoldTheme()
+const { theme } = useTheme()
 const loading = ref(false)
 const page = usePage()
 

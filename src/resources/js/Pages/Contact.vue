@@ -1,7 +1,7 @@
 <script setup>
 import { Head, Link } from '@inertiajs/vue3'
 import Layout from '@/Layouts/MainLayout.vue'
-import { useGoldTheme } from '@/Composables/styles/useGoldTheme'
+import { useTheme } from '@/Composables/styles/useTheme'
 import { ref } from 'vue'
 import { router } from '@inertiajs/vue3'
 
@@ -11,7 +11,7 @@ const props = defineProps({
     posterUrl: String
 })
 
-const { theme } = useGoldTheme()
+const { theme } = useTheme()
 
 const form = ref({
     name: '',

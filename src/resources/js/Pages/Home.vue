@@ -2,7 +2,7 @@
 import Layout from '@/Layouts/MainLayout.vue'
 import { computed } from 'vue'
 import { useAuth } from '@/Composables/useAuth'
-import { useGoldTheme } from '@/Composables/styles/useGoldTheme'
+import { useTheme } from '@/Composables/styles/useTheme'
 import ThemeSwitcher from '../Layouts/Components/Seo/ThemeSwitcher.vue'
 import ActionButton from "@/Components/UI/ActionButton.vue";
 import Title from "@/Components/UI/Title.vue";
@@ -13,7 +13,7 @@ defineProps({
 })
 
 const { isAuthenticated, userName } = useAuth()
-const { theme, iconColor, mutedColor } = useGoldTheme()
+const { theme, iconColor, mutedColor } = useTheme()
 
 const greeting = computed(() => {
     const hour = new Date().getHours()
