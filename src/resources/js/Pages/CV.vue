@@ -1,63 +1,10 @@
 <script setup>
-import {Head, Link} from '@inertiajs/vue3'
+import { Head, Link } from '@inertiajs/vue3'
 import Layout from '@/Layouts/MainLayout.vue'
-import {useGoldTheme} from '@/Composables/styles/useGoldTheme'
+import { useGoldTheme } from '@/Composables/styles/useGoldTheme'
+import { personal, experience, personalProjects, skills } from '@/Data/cvData'
 
-const {theme} = useGoldTheme()
-
-// Данные из вашего резюме
-const personal = {
-    name: 'Караваев Вадим Геннадьевич',
-    title: 'Fullstack-разработчик (PHP / JS)',
-    age: 36,
-    city: 'Серпухов (Московская область)',
-    phone: '+7 (999) 970-34-75',
-    email: 'karavaev199030@gmail.com',
-    telegram: '@Vadim_Karavaev',
-    github: 'github.com/starscy',
-    photo: '/images/avatar.jpg',
-    salary: '100 000 ₽ на руки'
-}
-
-const experience = [
-    {
-        period: 'Ноябрь 2024 — Май 2026',
-        company: 'Синергиум (Санкт-Петербург)',
-        role: 'Программист многостраничных сайтов',
-        description: [
-            'Поддержка 9+ проектов на Laravel, доработка самописной админки, написание unit-тестов.',
-            'Оптимизировал запросы и внедрил кэширование, снизив утилизацию CPU с 90% до 30% в период новогодних пиков.',
-            'Устранил переполнение памяти Redis, внедрив TTL для ключей.',
-            'Внедрил валидацию данных и обработку ошибок, сократив на 100% падения сайта из-за действий контент-менеджеров.',
-            'Разработал новый корпоративный сайт на MODX 3 за 3 месяца с сохранением SEO-позиций.'
-        ]
-    },
-    {
-        period: 'Август 2023 — Сентябрь 2024',
-        company: 'Возим (Москва)',
-        role: 'Web-разработчик',
-        description: [
-            'Разработка модулей на Laravel + Inertia + React (SSR) с серверным рендерингом и MUI-компонентами.',
-            'Создал и поддерживал приватную UI-библиотеку в Verdaccio, ускорив разработку фич на 40%.',
-            'Настроил сбор метрик (производительность, ошибки), участвовал в SEO-продвижении, создавал A/B-тесты.',
-            'Участие в разработке личного кабинета пользователя.'
-        ]
-    }
-]
-
-// Добавляем ваши личные проекты из PDF
-const personalProjects = [
-    {name: 'finance-bot', desc: 'Простой Telegram-бот для подсчета расходов и доходов'},
-    {name: 'wikiApp', desc: 'Агрегатор статей Wikipedia (Laravel + API)'},
-    {name: 'Console-snake', desc: 'Змейка в консоли (чистый PHP)'}
-]
-
-const skills = {
-    backend: ['PHP (OOP, паттерны)', 'Laravel (Eloquent, Queues, Redis)', 'Filament', 'MODX 3', 'Unit-тесты (PHPUnit, Mockery)'],
-    frontend: ['JavaScript (ES6+)', 'React (Hooks, Context, SSR)', 'Vue 3 (Composition API, Pinia)', 'TypeScript', 'Inertia.js'],
-    ui: ['MUI', 'Tailwind CSS', 'Bootstrap', 'BEM', 'SASS', 'Storybook'],
-    devops: ['Docker (сборка, отладка)', 'Linux / Ubuntu', 'MySQL / PostgreSQL', 'Swagger / OpenAPI', 'Git (Git Flow, MR/PR)']
-}
+const { theme } = useGoldTheme()
 </script>
 
 <template>
@@ -66,7 +13,7 @@ const skills = {
         description="Резюме Караваева Вадима. Fullstack-разработчик с опытом 3+ года. Laravel, Vue, React, Docker."
     >
         <Head>
-            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"/>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
         </Head>
 
         <div class="min-h-screen py-12 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto">
@@ -93,17 +40,12 @@ const skills = {
                         <p class="text-xl md:text-2xl text-gray-300 mt-2">{{ personal.title }}</p>
 
                         <div class="mt-4 flex flex-wrap gap-4 justify-center md:justify-start text-sm text-gray-400">
-                            <span class="flex items-center gap-2"><i
-                                class="fas fa-map-marker-alt text-gray-500"></i> {{ personal.city }}</span>
-                            <span class="flex items-center gap-2"><i
-                                class="fas fa-calendar text-gray-500"></i> {{ personal.age }} лет</span>
-                            <span class="flex items-center gap-2"><i
-                                class="fas fa-phone text-gray-500"></i> {{ personal.phone }}</span>
-                            <span class="flex items-center gap-2"><i
-                                class="fas fa-envelope text-gray-500"></i> {{ personal.email }}</span>
+                            <span class="flex items-center gap-2"><i class="fas fa-map-marker-alt text-gray-500"></i> {{ personal.city }}</span>
+                            <span class="flex items-center gap-2"><i class="fas fa-calendar text-gray-500"></i> {{ personal.age }} лет</span>
+                            <span class="flex items-center gap-2"><i class="fas fa-phone text-gray-500"></i> {{ personal.phone }}</span>
+                            <span class="flex items-center gap-2"><i class="fas fa-envelope text-gray-500"></i> {{ personal.email }}</span>
                         </div>
 
-                        <!-- БЛОК КОНТАКТОВ (Сделал их яркими и белыми) -->
                         <div class="mt-6 flex flex-wrap gap-3 justify-center md:justify-start">
                             <a :href="`https://${personal.github}`" target="_blank"
                                class="inline-flex items-center gap-2 px-4 py-2 rounded-xl border text-white transition-colors"
@@ -173,8 +115,7 @@ const skills = {
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
-                        <h4 class="text-white font-semibold mb-3 flex items-center gap-2"><i
-                            class="fas fa-code text-white/80"></i> Бэкенд</h4>
+                        <h4 class="text-white font-semibold mb-3 flex items-center gap-2"><i class="fas fa-code text-white/80"></i> Бэкенд</h4>
                         <div class="flex flex-wrap gap-2">
                             <span v-for="skill in skills.backend" :key="skill"
                                   class="px-3 py-1 rounded-full text-xs font-medium border border-white/20 bg-white/10 text-white">
@@ -184,8 +125,7 @@ const skills = {
                     </div>
 
                     <div>
-                        <h4 class="text-white font-semibold mb-3 flex items-center gap-2"><i
-                            class="fas fa-paint-brush text-white/80"></i> Фронтенд</h4>
+                        <h4 class="text-white font-semibold mb-3 flex items-center gap-2"><i class="fas fa-paint-brush text-white/80"></i> Фронтенд</h4>
                         <div class="flex flex-wrap gap-2">
                             <span v-for="skill in skills.frontend" :key="skill"
                                   class="px-3 py-1 rounded-full text-xs font-medium border border-white/20 bg-white/10 text-white">
@@ -195,8 +135,7 @@ const skills = {
                     </div>
 
                     <div>
-                        <h4 class="text-white font-semibold mb-3 flex items-center gap-2"><i
-                            class="fas fa-palette text-white/80"></i> UI / Дизайн-системы</h4>
+                        <h4 class="text-white font-semibold mb-3 flex items-center gap-2"><i class="fas fa-palette text-white/80"></i> UI / Дизайн-системы</h4>
                         <div class="flex flex-wrap gap-2">
                             <span v-for="skill in skills.ui" :key="skill"
                                   class="px-3 py-1 rounded-full text-xs font-medium border border-white/20 bg-white/10 text-white">
@@ -206,8 +145,7 @@ const skills = {
                     </div>
 
                     <div>
-                        <h4 class="text-white font-semibold mb-3 flex items-center gap-2"><i
-                            class="fas fa-server text-white/80"></i> DevOps & Инфраструктура</h4>
+                        <h4 class="text-white font-semibold mb-3 flex items-center gap-2"><i class="fas fa-server text-white/80"></i> DevOps & Инфраструктура</h4>
                         <div class="flex flex-wrap gap-2">
                             <span v-for="skill in skills.devops" :key="skill"
                                   class="px-3 py-1 rounded-full text-xs font-medium border border-white/20 bg-white/10 text-white">
