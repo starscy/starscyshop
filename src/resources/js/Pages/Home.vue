@@ -55,7 +55,8 @@ const icons = {
                 </div>
             </div>
 
-            <div class="flex flex-col gap-4 w-full max-w-md animate-slideUp">
+            <!-- КОНТЕЙНЕР КНОПОК -->
+            <div class="flex flex-col lg:grid lg:grid-cols-2 gap-4 lg:gap-6 w-full max-w-lg mx-auto animate-slideUp">
                 <ActionButton
                     href="/cv"
                     :icon="icons.projects"
@@ -64,6 +65,8 @@ const icons = {
                     :theme="theme"
                     :iconColor="iconColor"
                     :mutedColor="mutedColor"
+                    :transparent="true"
+                    :extraClass="'px-6 py-6 transition-transform duration-300 hover:scale-105 hover:-translate-y-1 hover:shadow-xl'"
                 />
                 <ActionButton
                     href="/contact"
@@ -73,25 +76,31 @@ const icons = {
                     :theme="theme"
                     :iconColor="iconColor"
                     :mutedColor="mutedColor"
+                    :transparent="true"
+                    :extraClass="'px-6 py-6 transition-transform duration-300 hover:scale-105 hover:-translate-y-1 hover:shadow-xl'"
                 />
                 <ActionButton
                     href="/products"
                     :icon="icons.shop"
                     title="Каталог товаров"
-                    subtitle="Посмотрите, как работает магазин с фильтрами"
+                    subtitle="Посмотрите, как работает магазин"
                     :theme="theme"
                     :iconColor="iconColor"
                     :mutedColor="mutedColor"
+                    :transparent="true"
+                    :extraClass="'px-6 py-6 transition-transform duration-300 hover:scale-105 hover:-translate-y-1 hover:shadow-xl'"
                 />
                 <ActionButton
                     :href="isAuthenticated ? '/admin/products' : '/login'"
                     :icon="icons.admin"
                     title="Админ-панель"
                     :titleSub="isAuthenticated ? userName : 'админ-панель'"
-                    :subtitle="isAuthenticated ? 'Управляйте товарами и заказами' : 'Войдите, чтобы управлять сайтом'"
+                    :subtitle="isAuthenticated ? 'Управляйте товарами' : 'Войдите'"
                     :theme="theme"
                     :iconColor="iconColor"
                     :mutedColor="mutedColor"
+                    :transparent="true"
+                    :extraClass="'px-6 py-6 transition-transform duration-300 hover:scale-105 hover:-translate-y-1 hover:shadow-xl'"
                 />
             </div>
         </div>
@@ -127,5 +136,10 @@ const icons = {
 
 .animate-slideUp {
     animation: slideUp 0.6s ease-out 0.2s both;
+}
+
+/* Добавляем 3D-эффект вручную */
+.perspective-1000 {
+    perspective: 1000px;
 }
 </style>

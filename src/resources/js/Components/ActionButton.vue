@@ -5,12 +5,15 @@ const props = defineProps({
     href: { type: String, required: true },
     icon: { type: String, required: true },
     title: { type: String, required: true },
-    titleSub: { type: String, default: '' },   // <--- Вторая строка для заголовка
+    titleSub: { type: String, default: '' },
     subtitle: { type: String, default: '' },
     theme: { type: Object, required: true },
     iconColor: { type: String, default: '#fbbf24' },
     mutedColor: { type: String, default: 'rgba(251, 191, 36, 0.6)' },
-    isExternal: { type: Boolean, default: false }
+    isExternal: { type: Boolean, default: false },
+    // НЕ class, а extraClass
+    extraClass: { type: String, default: '' },
+    transparent: { type: Boolean, default: false }
 })
 </script>
 
@@ -20,7 +23,12 @@ const props = defineProps({
         :href="href"
         :target="isExternal ? '_blank' : undefined"
         class="group relative overflow-hidden rounded-2xl backdrop-blur-md px-8 py-6 text-center transition-all duration-300 hover:scale-105"
-        :class="[theme.bg, theme.border, theme.borderHover]"
+        :class="[
+            transparent ? 'bg-white/10 backdrop-blur-md' : theme.bg,
+            theme.border,
+            theme.borderHover,
+            extraClass
+        ]"
     >
         <!-- Градиентная рамка при ховере -->
         <div class="absolute inset-0 rounded-2xl p-[1px] pointer-events-none">
@@ -30,7 +38,7 @@ const props = defineProps({
             ></div>
         </div>
 
-        <!-- Внутренний прозрачный фон -->
+        <!-- Внутренний прозрачный фон (стекло) -->
         <div class="absolute inset-0 rounded-2xl bg-gray-900/40 backdrop-blur-md"></div>
 
         <div class="relative flex flex-col items-center justify-center gap-2">
