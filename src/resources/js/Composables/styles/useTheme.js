@@ -195,6 +195,27 @@ export function useTheme() {
         return `/videos/evening${suffix}.mp4`
     })
 
+    // НОВОЕ: постеры (по времени суток или теме)
+    const posterByTime = computed(() => {
+        const isMobile = typeof window !== 'undefined' && window.innerWidth < 768
+        const suffix = isMobile ? '-mobile' : ''
+
+        const manualOverride = localStorage.getItem('app_theme_manual')
+        if (manualOverride === 'true') {
+            const name = currentThemeName.value
+            if (name === 'gold') return `/images/hero-poster${suffix}.jpg`
+            if (name === 'amber') return `/images/morning-poster${suffix}.jpg`
+            if (name === 'blue') return `/images/day-poster${suffix}.jpg`
+            if (name === 'purple') return `/images/evening-poster${suffix}.jpg`
+        }
+
+        const hour = new Date().getHours()
+        if (hour >= 22 || hour < 4) return `/images/hero-poster${suffix}.jpg`
+        if (hour >= 4 && hour < 10) return `/images/morning-poster${suffix}.jpg`
+        if (hour >= 10 && hour < 16) return `/images/day-poster${suffix}.jpg`
+        return `/images/evening-poster${suffix}.jpg`
+    })
+
     return {
         theme: currentTheme,
         setTheme,
@@ -202,7 +223,8 @@ export function useTheme() {
         currentThemeName,
         iconColor,
         mutedColor,
-        videoByTime
+        videoByTime,
+        posterByTime,
     }
 }
 
