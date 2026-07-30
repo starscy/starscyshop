@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\ContactController;
+use App\Models\Visitor;
 
 // ==================== ПУБЛИЧНЫЕ ЭНДПОИНТЫ ====================
 Route::get('/categories', [CategoryController::class, 'index']);
@@ -51,19 +52,20 @@ Route::get('/users/stats', function () {
 // ==================== НОВЫЙ МАРШРУТ ДЛЯ ФОРМЫ ОБРАТНОЙ СВЯЗИ ====================
 Route::post('/contact', [ContactController::class, 'send']);
 
-Route::get('/visitors/count', function () {
-    $ip = request()->ip();
-    $key = 'visitor:' . $ip;
-    $totalKey = 'visitors_total';
+Route::get('/visitors/count', function (Request $request) {
+    $ip = $request->ip();
+    $userAgent = $request->userAgent();
 
-    // Проверяем, был ли уже этот посетитель (кеш на 24 часа)
-    if (!Cache::has($key)) {
-        Cache::put($key, true, now()->addHours(24));
-        // Увеличиваем общий счётчик
-        Cache::increment($totalKey);
+    // Игнорируем роботов
+    if (preg_match('/bot|crawl|spider|scraper/i', $userAgent)) {
+        return response()->json(['count' => Visitor::count()]);
+    }
+
+    if (!Visitor::where('ip', $ip)->exists()) {
+        Visitor::create(['ip' => $ip]);
     }
 
     return response()->json([
-        'count' => Cache::get($totalKey, 0)
+        'count' => Visitor::count()
     ]);
 });
