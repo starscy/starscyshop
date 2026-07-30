@@ -2,6 +2,7 @@
 
 use App\Models\User;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\CategoryController;
@@ -49,3 +50,20 @@ Route::get('/users/stats', function () {
 
 // ==================== НОВЫЙ МАРШРУТ ДЛЯ ФОРМЫ ОБРАТНОЙ СВЯЗИ ====================
 Route::post('/contact', [ContactController::class, 'send']);
+
+Route::get('/visitors/count', function () {
+    $ip = request()->ip();
+    $key = 'visitor:' . $ip;
+    $totalKey = 'visitors_total';
+
+    // Проверяем, был ли уже этот посетитель (кеш на 24 часа)
+    if (!Cache::has($key)) {
+        Cache::put($key, true, now()->addHours(24));
+        // Увеличиваем общий счётчик
+        Cache::increment($totalKey);
+    }
+
+    return response()->json([
+        'count' => Cache::get($totalKey, 0)
+    ]);
+});

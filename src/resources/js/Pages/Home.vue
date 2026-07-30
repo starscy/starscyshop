@@ -6,6 +6,7 @@ import { useTheme } from '@/Composables/styles/useTheme'
 import ThemeSwitcher from '../Layouts/Components/Seo/ThemeSwitcher.vue'
 import ActionButton from "@/Components/UI/ActionButton.vue";
 import Title from "@/Components/UI/Title.vue";
+import VisitorCounter from "@/Components/VisitorCounter.vue";
 
 defineProps({
     videoUrl: String,
@@ -120,6 +121,8 @@ const icons = {
                 />
             </div>
         </div>
+
+        <VisitorCounter />
     </Layout>
 </template>
 
