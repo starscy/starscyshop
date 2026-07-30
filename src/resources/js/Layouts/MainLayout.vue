@@ -50,7 +50,8 @@ const props = defineProps({
             <link rel="icon" type="image/x-icon" href="/favicon.ico" />
         </Head>
 
-        <VideoBackground :video-url="videoUrl" :poster-url="posterUrl" />
+        <!-- УДАЛИЛИ VIDEO BACKGROUND отсюда -->
+
         <Transition name="page" mode="out-in">
             <div class="relative z-10" :key="$page.url">
                 <slot />

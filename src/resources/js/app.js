@@ -1,9 +1,12 @@
+import './bootstrap'
+import '../css/app.css'
+
 import { createApp, h } from 'vue'
 import { createInertiaApp } from '@inertiajs/vue3'
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers'
 import { ZiggyVue } from '../../vendor/tightenco/ziggy'
 
-const pages = import.meta.glob('./Pages/**/*.vue')
+import VideoBackground from '@/Layouts/VideoBackground.vue'
 
 createInertiaApp({
     resolve: async (name) => {
@@ -15,14 +18,25 @@ createInertiaApp({
             const page = await import('./Pages/Auth/Register.vue')
             return page.default
         }
-
-        return resolvePageComponent(`./Pages/${name}.vue`, pages)
+        return resolvePageComponent(`./Pages/${name}.vue`, import.meta.glob('./Pages/**/*.vue'))
     },
     setup({ el, App, props, plugin }) {
-        return createApp({ render: () => h(App, props) })
+        // Получаем videoUrl и posterUrl из пропсов страницы
+        const videoUrl = props.initialPage.props?.videoUrl || '/videos/hero-bg.mp4'
+        const posterUrl = props.initialPage.props?.posterUrl || '/images/hero-poster.webp'
+
+        const app = createApp({
+            render: () => h('div', { class: 'relative min-h-screen' }, [
+                // Видео на уровне корня — живёт всё время
+                h(VideoBackground, { videoUrl, posterUrl }),
+                // Слот для страниц
+                h(App, { ...props })
+            ])
+        })
             .use(plugin)
             .use(ZiggyVue)
-            .mount(el)
+
+        app.mount(el)
     },
     progress: {
         color: '#4B5563',
