@@ -45,9 +45,6 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::delete('/products/{product}', [ProductController::class, 'adminDestroy'])->name('products.destroy');
 });
 
-Route::get('/sitemap.xml', function () {
-    $products = Product::all();
-    return response()
-        ->view('sitemap', ['products' => $products])
-        ->header('Content-Type', 'text/xml');
-});
+use App\Http\Controllers\SitemapController;
+
+Route::get('/sitemap.xml', [SitemapController::class, 'index']);
