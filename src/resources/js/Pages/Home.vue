@@ -4,7 +4,8 @@ import { computed } from 'vue'
 import { useAuth } from '@/Composables/useAuth'
 import { useGoldTheme } from '@/Composables/styles/useGoldTheme'
 import ThemeSwitcher from '../Layouts/Components/Seo/ThemeSwitcher.vue'
-import ActionButton from '@/Components/ActionButton.vue'
+import ActionButton from "@/Components/UI/ActionButton.vue";
+import Title from "@/Components/UI/Title.vue";
 
 defineProps({
     videoUrl: String,
@@ -16,9 +17,9 @@ const { theme, iconColor, mutedColor } = useGoldTheme()
 
 const greeting = computed(() => {
     const hour = new Date().getHours()
-    if (hour >= 0 && hour < 6) return 'Доброй ночи'
-    if (hour >= 6 && hour < 12) return 'Доброе утро'
-    if (hour >= 12 && hour < 18) return 'Добрый день'
+    if (hour >= 22 || hour < 4) return 'Доброй ночи'
+    if (hour >= 4 && hour < 10) return 'Доброе утро'
+    if (hour >= 10 && hour < 16) return 'Добрый день'
     return 'Добрый вечер'
 })
 
@@ -41,9 +42,9 @@ const icons = {
                 <p class="text-xl md:text-2xl text-gray-400 tracking-widest uppercase mb-2">
                     {{ greeting }}, меня зовут
                 </p>
-                <h1 class="text-5xl md:text-7xl lg:text-8xl font-extrabold text-white tracking-tight mb-4 drop-shadow-2xl">
-                    Караваев Вадим
-                </h1>
+
+                <Title text="Караваев Вадим" />
+
                 <p class="text-2xl md:text-3xl font-medium text-white drop-shadow-lg">
                     Fullstack Web Developer
                 </p>
@@ -138,7 +139,6 @@ const icons = {
     animation: slideUp 0.6s ease-out 0.2s both;
 }
 
-/* Добавляем 3D-эффект вручную */
 .perspective-1000 {
     perspective: 1000px;
 }
