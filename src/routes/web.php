@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\ContactController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProductController;
 use App\Models\Product;
@@ -10,6 +11,7 @@ use App\Http\Controllers\CVController;
 // ==================== ПУБЛИЧНЫЕ МАРШРУТЫ ====================
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/cv', [CVController::class, 'index'])->name('cv');
+Route::get('/contact', [ContactController::class, 'index'])->name('contact');
 Route::get('/products', [ProductController::class, 'index'])->name('products.index');
 Route::get('/products/{product}', [ProductController::class, 'show'])->name('web.products.show');
 
