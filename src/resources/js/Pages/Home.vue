@@ -75,6 +75,15 @@ const icons = {
                     :mutedColor="mutedColor"
                 />
                 <ActionButton
+                    href="/products"
+                    :icon="icons.shop"
+                    title="Каталог товаров"
+                    subtitle="Посмотрите, как работает магазин с фильтрами"
+                    :theme="theme"
+                    :iconColor="iconColor"
+                    :mutedColor="mutedColor"
+                />
+                <ActionButton
                     :href="isAuthenticated ? '/admin/products' : '/login'"
                     :icon="icons.admin"
                     title="Админ-панель"
