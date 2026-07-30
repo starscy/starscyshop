@@ -35,8 +35,8 @@ const icons = {
     <Layout
         :video-url="videoUrl"
         :poster-url="posterUrl"
-        title="Караваев Вадим | Портфолио Fullstack разработчика"
-        description="Портфолио разработчика Караваева Вадима. Laravel, Vue, Docker. Создаю современные веб-приложения."
+        title="Караваев Вадим | Создание сайтов и Telegram-ботов"
+        description="Разработка сайтов, магазинов и Telegram-ботов под ключ. Laravel, Vue, Docker."
     >
         <div class="flex flex-col items-center justify-center min-h-screen px-4">
             <div class="text-center mb-12 animate-fadeIn">
@@ -49,55 +49,67 @@ const icons = {
                 <p class="text-2xl md:text-3xl font-medium text-white drop-shadow-lg">
                     Fullstack Web Developer
                 </p>
-                <p class="text-lg md:text-xl text-gray-300 mt-2 drop-shadow-lg max-w-2xl mx-auto">
-                    Специализируюсь на создании высоко нагруженных приложений на Laravel, Vue.js и Docker.
+
+                <!-- БОЛЕЕ ЦЕЛЕВОЙ ТЕКСТ ПОД УСЛУГИ -->
+                <p class="text-lg md:text-xl text-gray-300 mt-4 drop-shadow-lg max-w-2xl mx-auto">
+                    Создам для вас сайт, интернет-магазин или Telegram-бота под ключ.
+                    <br>Современный стек, адаптивность и быстрая загрузка.
                 </p>
+
                 <div class="mt-6">
                     <ThemeSwitcher/>
                 </div>
             </div>
 
-            <!-- КОНТЕЙНЕР КНОПОК -->
+            <!-- КНОПКИ С ПРИЗЫВОМ К ДЕЙСТВИЮ -->
             <div class="flex flex-col lg:grid lg:grid-cols-2 gap-4 lg:gap-6 w-full max-w-lg mx-auto animate-slideUp">
+
+                <!-- Кнопка "Заказать" (самая важная) -->
+                <ActionButton
+                    href="/contact"
+                    :icon="icons.contact"
+                    title="Заказать разработку"
+                    subtitle="Обсудим ваш проект и сроки"
+                    :theme="theme"
+                    :iconColor="iconColor"
+                    :mutedColor="mutedColor"
+                    :transparent="true"
+                    :extraClass="'px-6 py-6 transition-transform duration-300 hover:scale-105 hover:-translate-y-1 hover:shadow-xl'"
+                />
+
+                <!-- Кнопка "Портфолио" (для доверия) -->
                 <ActionButton
                     href="/cv"
                     :icon="icons.projects"
                     title="Моё портфолио"
-                    subtitle="Посмотрите, что я умею делать"
+                    subtitle="Посмотрите мои работы и опыт"
                     :theme="theme"
                     :iconColor="iconColor"
                     :mutedColor="mutedColor"
                     :transparent="true"
                     :extraClass="'px-6 py-6 transition-transform duration-300 hover:scale-105 hover:-translate-y-1 hover:shadow-xl'"
                 />
-                <ActionButton
-                    href="/contact"
-                    :icon="icons.contact"
-                    title="Связаться со мной"
-                    subtitle="Напишите мне для сотрудничества"
-                    :theme="theme"
-                    :iconColor="iconColor"
-                    :mutedColor="mutedColor"
-                    :transparent="true"
-                    :extraClass="'px-6 py-6 transition-transform duration-300 hover:scale-105 hover:-translate-y-1 hover:shadow-xl'"
-                />
+
+                <!-- Кнопка "Магазин" (демонстрация) -->
                 <ActionButton
                     href="/products"
                     :icon="icons.shop"
-                    title="Каталог товаров"
-                    subtitle="Посмотрите, как работает магазин"
+                    title="Демо-магазин"
+                    subtitle="Живой пример интернет-магазина"
                     :theme="theme"
                     :iconColor="iconColor"
                     :mutedColor="mutedColor"
                     :transparent="true"
                     :extraClass="'px-6 py-6 transition-transform duration-300 hover:scale-105 hover:-translate-y-1 hover:shadow-xl'"
                 />
+
+                <!-- Кнопка "Вход" (для управленцев) -->
                 <ActionButton
                     :href="isAuthenticated ? '/admin/products' : '/login'"
                     :icon="icons.admin"
-                    title="Админ-панель"
-                    :titleSub="isAuthenticated ? userName : 'админ-панель'"
-                    :subtitle="isAuthenticated ? 'Управляйте товарами' : 'Войдите'"
+                    title="Демо-админки"
+                    :titleSub="isAuthenticated ? userName : 'для клиентов'"
+                    :subtitle="isAuthenticated ? 'Ваши товары и заказы' : 'Войдите в админ-панель'"
                     :theme="theme"
                     :iconColor="iconColor"
                     :mutedColor="mutedColor"
