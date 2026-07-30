@@ -5,9 +5,11 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProductController;
 use App\Models\Product;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\CVController;
 
 // ==================== ПУБЛИЧНЫЕ МАРШРУТЫ ====================
 Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/cv', [CVController::class, 'index'])->name('cv');
 Route::get('/products', [ProductController::class, 'index'])->name('products.index');
 Route::get('/products/{product}', [ProductController::class, 'show'])->name('web.products.show');
 
