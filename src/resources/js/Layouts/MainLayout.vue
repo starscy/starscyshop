@@ -2,6 +2,7 @@
 import { Head } from '@inertiajs/vue3'
 import VideoBackground from './VideoBackground.vue'
 import { usePage } from '@inertiajs/vue3'
+import CookieBanner from "@/Components/CookieBanner.vue";
 
 const props = defineProps({
     videoUrl: String,
@@ -59,6 +60,8 @@ const props = defineProps({
             </div>
         </Transition>
     </div>
+
+    <CookieBanner />
 </template>
 
 <style>
