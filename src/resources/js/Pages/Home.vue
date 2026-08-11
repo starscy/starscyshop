@@ -122,7 +122,7 @@ const icons = {
             </div>
         </div>
 
-        <VisitorCounter />
+<!--        <VisitorCounter />-->
     </Layout>
 </template>
 
